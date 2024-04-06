@@ -1,0 +1,226 @@
+; Wed Feb 28 10:28:45 MSK 2024
+; 
+;+ (version "3.5")
+;+ (build "Build 663")
+
+
+(defclass %3ACLIPS_TOP_LEVEL_SLOT_CLASS "Fake class to save top-level slot information"
+	(is-a USER)
+	(role abstract)
+	(multislot temp-slots
+		(type INSTANCE)
+;+		(allowed-classes TemplateSlot)
+		(create-accessor read-write))
+	(multislot constructs
+		(type INSTANCE)
+;+		(allowed-classes Global Rule Template Module Fact Facts Function Command Comment)
+		(create-accessor read-write))
+	(single-slot implied
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot vertical
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+		(default FALSE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot lhs
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot rhs
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot type
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot butt-save-clp
+		(type STRING)
+;+		(value "Save/clips.gen/save-clp-file")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot fact-slots
+		(type INSTANCE)
+;+		(allowed-classes FactSlot)
+		(create-accessor read-write))
+	(single-slot salience
+		(type INTEGER)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot aux
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot auto-focus
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot facts
+		(type INSTANCE)
+;+		(allowed-classes Fact)
+		(create-accessor read-write))
+	(single-slot path
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot multislot
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+		(default FALSE)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass CLIPSProOntology
+	(is-a USER)
+	(role abstract)
+	(single-slot title
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Module
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(single-slot source
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Rule
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(single-slot lhs
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot salience
+		(type INTEGER)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot rhs
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot auto-focus
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Template
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(multislot temp-slots
+		(type INSTANCE)
+;+		(allowed-classes TemplateSlot)
+		(create-accessor read-write)))
+
+(defclass Function
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(single-slot source
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot arguments
+		(type STRING)
+		(default "[]")
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Fact
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(multislot fact-slots
+		(type INSTANCE)
+;+		(allowed-classes FactSlot)
+		(create-accessor read-write))
+	(single-slot implied
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot vertical
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+		(default FALSE)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Global
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(single-slot source
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Facts
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(multislot facts
+		(type INSTANCE)
+;+		(allowed-classes Fact)
+		(create-accessor read-write)))
+
+(defclass ClpFile
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(single-slot butt-save-clp
+		(type STRING)
+;+		(value "Save/clips.gen/save-clp-file")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot constructs
+		(type INSTANCE)
+;+		(allowed-classes Global Rule Template Module Fact Facts Function Command Comment)
+		(create-accessor read-write))
+	(single-slot path
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Command
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(single-slot source
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass TemplateSlot
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(single-slot type
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot multislot
+		(type SYMBOL)
+		(allowed-values FALSE TRUE)
+		(default FALSE)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot aux
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass FactSlot
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(single-slot value
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Comment
+	(is-a CLIPSProOntology)
+	(role concrete)
+	(single-slot source
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))

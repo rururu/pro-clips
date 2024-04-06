@@ -1,0 +1,169 @@
+; Fri Apr 05 16:48:11 MSK 2024
+; 
+;+ (version "3.5")
+;+ (build "Build 663")
+
+([CLIPSProCommunicator_Class0] of  CloProgram
+
+	(cloFunctions
+		[ClojureCLIPSJNI_Class19]
+		[ClojureCLIPSJNI_Class22]
+		[ClojureCLIPSJNI_Class26]
+		[ClojureCLIPSJNI_Class28]
+		[ClojureCLIPSJNI_Class31]
+		[ClojureCLIPSJNI_Class32]
+		[ClojureCLIPSJNI_Class33]
+		[ClojureCLIPSJNI_Class36]
+		[ClojureCLIPSJNI_Class37]
+		[ClojureCLIPSJNI_Class100017]
+		[ClojureCLIPSJNI_Class100018]
+		[ClojureCLIPSJNI_Class100022]
+		[ClojureCLIPSJNI_Class10003]
+		[ClojureCLIPSJNI_Class20001]
+		[ClojureCLIPSJNI_Class20012])
+	(cloNamespace [CLIPSProCommunicator_Class1])
+	(cloVars
+		[ClojureCLIPSJNI_Class10000]
+		[ClojureCLIPSJNI_Class1]
+		[ClojureCLIPSJNI_Class100027]
+		[ClojureCLIPSJNI_Class30006]
+		[ClojureCLIPSJNI_Class80000]
+		[ClojureCLIPSJNI_Class10004]
+		[ClojureCLIPSJNI_Class10001]
+		[ClojureCLIPSJNI_Class30004])
+	(title "Clojure CLIPS Java Native Interface"))
+
+([CLIPSProCommunicator_Class1] of  CloNamespace
+
+	(source "(:use \n  protege.core)\n(:import\n  net.sf.clipsrules.jni.Environment\n  net.sf.clipsrules.jni.UserFunction\n  net.sf.clipsrules.jni.IntegerValue\n  net.sf.clipsrules.jni.FloatValue\n  net.sf.clipsrules.jni.StringValue\n  net.sf.clipsrules.jni.MultifieldValue\n  javax.swing.JFrame\n  javax.swing.JDialog\n  javax.swing.JOptionPane)")
+	(title "clo.clipsjni"))
+
+([ClojureCLIPSJNI_Class1] of  CloVar
+
+	(source "(defonce ENV (Environment.))")
+	(title "DEFONSE-ENV"))
+
+([ClojureCLIPSJNI_Class10000] of  CloVar
+
+	(source "(defn dialog\n  ([cls title]\n    (when-let [d (foc cls \"title\" title)]\n      (.show *prj* (.shallowCopy d *kb* nil))))\n  ([cls title mess]\n    (when-let [d (foc cls \"title\" title)]\n      (if (= cls \"Log\")\n        (let [old (sv d \"text\")]\n          (ssv d \"text\" (if (empty? old) \n                                mess\n                                (str old \"\\n\" mess))))\n        (ssv   d \"text\" mess))\n      (.show *prj* d)))\n ([cls title mess vsdf]\n    (when-let [d (foc cls \"title\" title)]\n      (if (= cls \"Input\")\n        (ssv d \"input\" vsdf)\n        (ssvs d \"variants\" (map str vsdf)))\n      (ssv   d \"text\" mess)\n      (.show *prj* d))))")
+	(title "DEFN-dialog"))
+
+([ClojureCLIPSJNI_Class100004] of  CloFunction
+
+	(source "(when-let [d (foc cls \"title\" title)]\n  (if (= cls \"Select\")\n    (ssvs d \"variants\" (map str src))\n    (ssv   d \"text\" src))\n  (.show *prj* d))")
+	(title "dialog [cls title src]"))
+
+([ClojureCLIPSJNI_Class10001] of  CloVar
+
+	(source "(defonce UF5 (do\n\n(.addUserFunction ENV \"user-log\"\n  (proxy [UserFunction] []\n    (evaluate [args]\n      (let [[title mess] (vec (map #(.getValue %) args))]\n        (dialog \"Log\" title mess)\n        (IntegerValue. 0)))))\n\n0))")
+	(title "DUF-user-log"))
+
+([ClojureCLIPSJNI_Class100017] of  CloFunction
+
+	(source "(let [mp (into {} hm)\n       clw (mp \"clsWidget\")\n       sel (.getSelection (.getSlotWidget clw (slt \"variants\")))]\n  (if (not (empty? sel))\n    (let [sel (interpose \" \" sel)\n           sel (apply str sel)\n           ans (str \"(\" (mp \"title\") \" \" sel \")\")]\n      (delin inst)\n      (assert-string ans)\n      (run))))")
+	(title "select [hm inst]"))
+
+([ClojureCLIPSJNI_Class100018] of  CloFunction
+
+	(source "(let [ans (str \"(\" (sv inst \"title\") \" yes)\")]\n  (delin inst)\n  (assert-string ans)\n  (run))")
+	(title "yes [hm inst]"))
+
+([ClojureCLIPSJNI_Class100022] of  CloFunction
+
+	(source "(let [ans (str \"(\" (sv inst \"title\") \" no)\")]\n  (delin inst)\n  (assert-string ans)\n  (run))")
+	(title "no [hm inst]"))
+
+([ClojureCLIPSJNI_Class100027] of  CloVar
+
+	(source "(defonce UF1 (do\n\n(.addUserFunction ENV \"user-message\"\n  (proxy [UserFunction] []\n    (evaluate [args]\n      (let [[title mess] (vec (map #(.getValue %) args))]\n        (dialog \"Message\" title mess)\n        (IntegerValue. 0)))))\n\n0))")
+	(title "DUF-user-message"))
+
+([ClojureCLIPSJNI_Class10003] of  CloFunction
+
+	(source "(let [mp (into {} hm)\n       ans (str \"(\" (mp \"title\") \" \" (mp \"input\") \")\")]\n      (delin inst)\n      (assert-string ans)\n      (run))")
+	(title "input [hm inst]"))
+
+([ClojureCLIPSJNI_Class10004] of  CloVar
+
+	(source "(defonce UF4 (do\n\n(.addUserFunction ENV \"user-input\"\n  (proxy [UserFunction] []\n    (evaluate [args]\n      (let [[title mess deflt] (vec (map #(.getValue %) args))]\n        (dialog \"Input\" title mess deflt)\n        (IntegerValue. 0)))))\n\n0))")
+	(title "DUF-user-input"))
+
+([ClojureCLIPSJNI_Class19] of  CloFunction
+
+	(source "(.getValue (.assertString ENV s))")
+	(title "assert-string [s]"))
+
+([ClojureCLIPSJNI_Class20001] of  CloFunction
+
+	(source "(ssv inst \"text\" \"\")")
+	(title "clear-log [hm inst]"))
+
+([ClojureCLIPSJNI_Class20012] of  CloFunction
+
+	(source "([ff]\n  (doseq [f ff]\n    (assert-string f)))\n([hm inst]\n  (doseq [q (svs inst \"questions\")]\n    (assert-string \n      (.replaceFirst (sv q \"fact\") \"\\\\?\"\n        (if (is? (sv q \"flag\"))\n           \"yes\"\n           \"no\"))))\n  (delin inst)  \n  (run))")
+	(title "assert-facts"))
+
+([ClojureCLIPSJNI_Class22] of  CloFunction
+
+	(source "(.getValue (.eval ENV s))")
+	(title "get-eval-value [s]"))
+
+([ClojureCLIPSJNI_Class26] of  CloFunction
+
+	(source "(map #(.getValue %) (.eval ENV s))")
+	(title "get-eval-values [s]"))
+
+([ClojureCLIPSJNI_Class28] of  CloFunction
+
+	(source "(.load ENV p)")
+	(title "load-constructs [p]"))
+
+([ClojureCLIPSJNI_Class30004] of  CloVar
+
+	(source "(defonce UF6 (do\n\n(.addUserFunction ENV \"user-questionnaire\"\n  (proxy [UserFunction] []\n    (evaluate [args]\n      (let [[title] (vec (map #(.getValue %) args))]\n        (dialog \"Questionnaire\" title)\n        (IntegerValue. 0)))))\n\n0))")
+	(title "DUF-user-questionnaire"))
+
+([ClojureCLIPSJNI_Class30006] of  CloVar
+
+	(source "(defonce UF2 (do\n\n(.addUserFunction ENV \"user-confirm\"\n  (proxy [UserFunction] []\n    (evaluate [args]\n      (let [[title mess] (vec (map #(.getValue %) args))]\n        (dialog \"Confirm\" title mess)\n        (IntegerValue. 0)))))\n\n0))")
+	(title "DUF-user-confirm"))
+
+([ClojureCLIPSJNI_Class31] of  CloFunction
+
+	(source "(.clear ENV)")
+	(title "clear []"))
+
+([ClojureCLIPSJNI_Class32] of  CloFunction
+
+	(source "(.reset ENV)")
+	(title "reset []"))
+
+([ClojureCLIPSJNI_Class33] of  CloFunction
+
+	(source "(.run ENV)")
+	(title "run []"))
+
+([ClojureCLIPSJNI_Class36] of  CloFunction
+
+	(source "([type]\n  (.findAllFacts ENV type))\n([var type condition]\n (.findAllFacts ENV var type condition))")
+	(title "find-facts"))
+
+([ClojureCLIPSJNI_Class37] of  CloFunction
+
+	(source "(.getSlotValue s)")
+	(title "get-slot-value [s]"))
+
+([ClojureCLIPSJNI_Class80000] of  CloVar
+
+	(source "(defonce UF3 (do\n\n(.addUserFunction ENV \"user-select\"\n  (proxy [UserFunction] []\n    (evaluate [args]\n      (let [[title mess & vars] (vec (map #(.getValue %) args))]\n        (dialog \"Select\" title mess vars)\n        (IntegerValue. 0)))))\n\n0))")
+	(title "DUF-user-select"))
+
+([ProcessCommunicator_Class20003] of  CloFunction
+
+	(source "(vswap! vol assoc pkey prc)\n    (if (and (instance? edu.stanford.smi.protege.model.DefaultInstance pkey)\n          (sv pkey \"repeat\"))\n      (start cmd vol pkey))))")
+	(title "watch [hm inst]"))
+
+([ProcessCommunicator_Class40000] of  CloDocumentation
+
+	(source "<html>\n  <head>\n    <style type=\"text/css\">\n      <!--\n        body { font-family: arial; font-size: 12pt }\n        p { font-family: arial; margin-top: 2; margin-right: 2; margin-bottom: 2; margin-left: 2 }\n      -->\n    </style>\n    \n  </head>\n  <body>\n    <b>Preparations and start a CLIPS process</b><br><br>1. Create an instance of a class CLIPSProcess.<br>2. Fill slots: program1, program2, os-command pattern.If you need, copy and update corresponding exsisting instances.<br>3. Check a comm-debug button, if needed.<br><br>Instance of CLIPSProcess example:<br><img src=\"file:doc/CLIPSProcess.png\"><br><br>4. Click a button Start Process. The slot os-command will be filled automatically aproprietly. The CLIPS process starts Corresponding message will be printed in a terminal.<br>5. You can send selected CLIPS commands and assert selected facts during execution.<br>6. To finish the process click a button Stop Process.The process would be finished and corresponding message would be in the terminal. It contains output by <b>println</b>, <b>printout </b>&#1080; <b>format</b>.<br>7. To see current printout during execution input a command (dribble-off) and look at &quot;clipsout.txt&quot; file. To resume saving printout in the file input a command (dribble-on &lt;file-name&gt;).<br>8. If the program hungs, kill the <b>clips</b> process using OS command and examine output in the terminal.<br><br></body>\n</html>")
+	(title "Process Communicator"))

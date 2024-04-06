@@ -1,0 +1,16 @@
+;; This file is only needed when using Clojure CLI Tools
+{:deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        protege/protege {:local/root "lib/protege-3.5.0.jar"}
+        protege/standard-extensions {:local/root "lib/standard-extensions-3.5.0.jar"}
+        protege/looks {:local/root "lib/looks-3.5.0.jar"}
+        protege/unicode_panel {:local/root "lib/unicode_panel-3.5.0.jar"}
+        protege/JGo {:local/root "lib/JGo-3.5.0.jar"}
+        protege/JGoLayout {:local/root "lib/JGoLayout-3.5.0.jar"}
+        protege/ClojureTab {:local/root "lib/ClojureTab-1.5.jar"}
+        protege/ProtegeExtensions {:local/root "lib/ProtegeExtensions.jar"}
+        CLIPS/CLIPS {:local/root "lib/CLIPSIDE.jar"}}
+ :aliases {:pro-clips {:main-opts ["-m" "clips-pro-interface.main"]
+                       :jvm-opts  ["-Djava.library.path=./lib"]}
+           :build {:deps {io.github.clojure/tools.build {:git/tag "v0.10.0" :git/sha "3a2c484"}}
+				   :ns-default build}}
+ :paths ["src" "src/clojure" "classes"]}

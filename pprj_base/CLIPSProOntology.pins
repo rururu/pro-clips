@@ -1,0 +1,87 @@
+; Wed Feb 28 10:28:45 MSK 2024
+; 
+;+ (version "3.5")
+;+ (build "Build 663")
+
+([CLIPSProInterface_Class10] of  CloFunction
+
+	(source "(let [tit (sv inst \"title\")\n       src (sv inst \"source\")]\n  (str \"(defglobal \" tit \"\\n  \" src \")\"))")
+	(title "gen-global [inst]"))
+
+([CLIPSProInterface_Class10009] of  CloFunction
+
+	(source "(sv inst \"source\")")
+	(title "gen-comment [inst]"))
+
+([CLIPSProInterface_Class11] of  CloFunction
+
+	(source "(let [tit (sv fsi \"title\")\n       val (sv fsi \"value\")]\n  (str ss pfx \"(\" tit \" \" val \")\" sep))")
+	(title "gen-slot [ss fsi pfx sep]"))
+
+([CLIPSProInterface_Class12] of  CloFunction
+
+	(source "(let [tit (sv sli \"title\")\n       typ (sv sli \"type\")\n       aux (sv sli \"aux\")\n       mult (sv sli \"multislot\")\n       head (if (is? mult) \"  (multislot  \" \"  (slot  \")]\n  (str ss head tit \" (type \" typ \") \" aux \")\\n\"))")
+	(title "gen-slot-type [ss sli]"))
+
+([CLIPSProInterface_Class13] of  CloFunction
+
+	(source "(let [type (sv inst \"title\")\n       sls (svs inst \"temp-slots\")]\n  (str (reduce #(gen-slot-type %1 %2) \n                      (str \"(deftemplate  \" type \"\\n\")\n                      sls) \")\"))")
+	(title "gen-template [inst]"))
+
+([CLIPSProInterface_Class14] of  CloFunction
+
+	(source "(loop [cc (svs inst \"constructs\") src \"\"]\n  (if (seq cc)\n    (let [[f & r] cc]\n      (recur r \n        (str src (condp = (typ f)\n                      \"Fact\"          (gen-fact f)\n                      \"Facts\"        (gen-facts f)\n                      \"Function\"   (gen-function f)\n                      \"Global\"       (gen-global  f)\n                      \"Module\"     (gen-module f)\n                      \"Rule\"          (gen-rule f)\n                      \"Template\"  (gen-template f)\n                      \"Command\" (gen-command f)\n                      \"Comment\"  (gen-comment f)\n                      (do (println \"Unknown construct \" (typ f) \"!\") \"\"))\n                    \"\\n\\n\")))\n    (spit (sv inst \"path\") src)))")
+	(title "save-clp-file [hm inst]"))
+
+([CLIPSProInterface_Class15] of  CloFunction
+
+	(source "(let [type (sv inst \"title\")\n       impl (sv inst \"implied\")\n       sls (svs inst \"fact-slots\")\n       vrt (sv inst \"vertical\")\n       pfx (if vrt \"    \" \"\")\n       sep (if vrt \"\\n\" \" \")]\n  (if impl\n    (str \"(\" type \" \" impl \")\" )\n    (str (reduce #(gen-slot %1 %2 pfx sep) \n                        (str \"(\" type \" \" sep) \n                        sls) pfx \")\\n\")))")
+	(title "gen-fact [inst]"))
+
+([CLIPSProInterface_Class16] of  CloFunction
+
+	(source "(loop [ff (svs inst \"facts\") src (str \"(deffacts \" (sv inst \"title\"))]\n  (if (seq ff)\n    (recur (rest ff)\n       (str src \"\\n  \" (gen-fact (first ff)) ))\n    (str src \")\")))")
+	(title "gen-facts [inst]"))
+
+([CLIPSProInterface_Class17] of  CloFunction
+
+	(source "(let [tit (sv inst \"title\")\n       src (sv inst \"source\")]\n  (str \"(defmodule \" tit \"\\n  \" src \")\"))")
+	(title "gen-module [inst]"))
+
+([CLIPSProInterface_Class18] of  CloFunction
+
+	(source "(str \"(\" (sv inst \"title\") \" \"  (sv inst \"source\") \")\")")
+	(title "gen-command [inst]"))
+
+([CLIPSProInterface_Class6] of  CloProgram
+
+	(cloFunctions
+		[CLIPSProInterface_Class8]
+		[CLIPSProInterface_Class9]
+		[CLIPSProInterface_Class10]
+		[CLIPSProInterface_Class11]
+		[CLIPSProInterface_Class12]
+		[CLIPSProInterface_Class13]
+		[CLIPSProInterface_Class15]
+		[CLIPSProInterface_Class16]
+		[CLIPSProInterface_Class17]
+		[CLIPSProInterface_Class18]
+		[CLIPSProInterface_Class10009]
+		[CLIPSProInterface_Class14])
+	(cloNamespace [CLIPSProInterface_Class7])
+	(title "CLIPS Generator"))
+
+([CLIPSProInterface_Class7] of  CloNamespace
+
+	(source "(:use protege.core)\n(:import\n  edu.stanford.smi.protege.model.ValueType)")
+	(title "clips.gen"))
+
+([CLIPSProInterface_Class8] of  CloFunction
+
+	(source "(let [tit (sv inst \"title\")\n       sal (sv inst \"salience\")\n       afs (sv inst \"auto-focus\")\n       lhs (sv inst \"lhs\")\n       rhs (sv inst \"rhs\")]\n  (str \"(defrule \" tit \"\\n\"\n        (cond \n          (and sal afs) \n          (str \"(declare (salience \" sal \")\\n\"\n                \"         (auto-focus TRUE))\\n\")\n          sal\n          (str \"(declare (salience \" sal \"))\\n\")\n          afs \"(declare (auto-focus TRUE))\\n\"\n          true \"\")\n        lhs\n        \"\\n=>\\n\"\n        rhs\n        \")\"))")
+	(title "gen-rule [inst]"))
+
+([CLIPSProInterface_Class9] of  CloFunction
+
+	(source "(let [tit (sv inst \"title\")\n       ars (sv inst \"arguments\")\n       src (sv inst \"source\")]\n  (str \"(deffunction \" tit \" \" ars \"\\n  \"\n        src \")\"))")
+	(title "gen-function [inst]"))

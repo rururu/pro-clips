@@ -1,0 +1,1121 @@
+; Fri Apr 05 19:20:49 MSK 2024
+; 
+;+ (version "3.5")
+;+ (build "Build 663")
+
+([CAM_Class0] of  TemplateSlot
+
+	(aux "(range 1 ?VARIABLE)")
+	(title "search-depth")
+	(type "INTEGER"))
+
+([CAM_Class1] of  TemplateSlot
+
+	(aux "(range 1 ?VARIABLE)")
+	(title "search-depth")
+	(type "INTEGER"))
+
+([CAM_Class10] of  TemplateSlot
+
+	(aux "(range 1 ?VARIABLE)")
+	(title "search-depth")
+	(type "INTEGER"))
+
+([CAM_Class11] of  TemplateSlot
+
+	(aux "(allowed-symbols no-parent)")
+	(title "parent")
+	(type "FACT-ADDRESS SYMBOL"))
+
+([CAM_Class12] of  TemplateSlot
+
+	(aux "(range 0 ?VARIABLE)")
+	(title "shore-1-missionaries")
+	(type "INTEGER"))
+
+([CAM_Class13] of  TemplateSlot
+
+	(aux "(range 0 ?VARIABLE)")
+	(title "shore-1-cannibals")
+	(type "INTEGER"))
+
+([CAM_Class14] of  TemplateSlot
+
+	(aux "(range 0 ?VARIABLE)")
+	(title "shore-2-missionaries")
+	(type "INTEGER"))
+
+([CAM_Class15] of  TemplateSlot
+
+	(aux "(range 0 ?VARIABLE)")
+	(title "shore-2-cannibals")
+	(type "INTEGER"))
+
+([CAM_Class16] of  TemplateSlot
+
+	(aux "(allowed-values shore-1 shore-2)")
+	(title "boat-location")
+	(type "SYMBOL"))
+
+([CAM_Class17] of  TemplateSlot
+
+	(title "last-move")
+	(type "STRING"))
+
+([CAM_Class18] of  Comment
+
+	(source ";;;*****************\n;;;* INITIAL STATE *\n;;;*****************")
+	(title "INITIAL STATE"))
+
+([CAM_Class19] of  Global
+
+	(source "?*initial-missionaries* = 3\n  ?*initial-cannibals* = 3")
+	(title "MAIN"))
+
+([CAM_Class2] of  TemplateSlot
+
+	(aux "(range 1 ?VARIABLE)")
+	(title "search-depth")
+	(type "INTEGER"))
+
+([CAM_Class20] of  Facts
+
+	(facts [CAM_Class21])
+	(title "MAIN::initial-positions"))
+
+([CAM_Class21] of  Fact
+
+	(fact-slots
+		[CAM_Class22]
+		[CAM_Class23]
+		[CAM_Class24]
+		[CAM_Class25]
+		[CAM_Class26]
+		[CAM_Class27]
+		[CAM_Class28]
+		[CAM_Class29])
+	(title "status")
+	(vertical TRUE))
+
+([CAM_Class22] of  FactSlot
+
+	(title "search-depth")
+	(value "1"))
+
+([CAM_Class23] of  FactSlot
+
+	(title "parent")
+	(value "no-parent"))
+
+([CAM_Class24] of  FactSlot
+
+	(title "shore-1-missionaries")
+	(value "?*initial-missionaries*"))
+
+([CAM_Class25] of  FactSlot
+
+	(title "shore-2-missionaries")
+	(value "0"))
+
+([CAM_Class26] of  FactSlot
+
+	(title "shore-1-cannibals")
+	(value "?*initial-cannibals*"))
+
+([CAM_Class27] of  FactSlot
+
+	(title "shore-2-cannibals")
+	(value "0"))
+
+([CAM_Class28] of  FactSlot
+
+	(title "boat-location")
+	(value "shore-1"))
+
+([CAM_Class29] of  FactSlot
+
+	(title "last-move")
+	(value "\"No move.\""))
+
+([CAM_Class3] of  TemplateSlot
+
+	(aux "(range 1 ?VARIABLE)")
+	(title "search-depth")
+	(type "INTEGER"))
+
+([CAM_Class30] of  Facts
+
+	(facts [CAM_Class31])
+	(title "MAIN::boat-information"))
+
+([CAM_Class31] of  Fact
+
+	(implied "2")
+	(title "boat-can-hold")
+	(vertical FALSE))
+
+([CAM_Class32] of  Comment
+
+	(source ";;;****************************************\n;;;* FUNCTION FOR MOVE DESCRIPTION STRING *\n;;;****************************************")
+	(title "FUNCTION FOR MOVE DESCRIPTION STRING"))
+
+([CAM_Class33] of  Function
+
+	(arguments "(?missionaries ?cannibals ?shore)")
+	(source "(switch ?missionaries\n     (case 0 then\n        (if (eq ?cannibals 1) \n            then (user-log \"CAM\" (format nil \"Move 1 cannibal to %s.\" ?shore))\n            else (user-log \"CAM\" (format nil \"Move %d cannibals to %s.\" ?cannibals ?shore))))\n     (case 1 then\n        (switch ?cannibals\n           (case 0 then\n              (user-log \"CAM\" (format nil \"Move 1 missionary to %s.\" ?shore)))\n           (case 1 then\n              (user-log \"CAM\" (format nil \"Move 1 missionary and 1 cannibal to %s.\" ?shore)))\n           (default then\n              (user-log \"CAM\" (format nil \"Move 1 missionary and %d cannibals to %s.\" \n                          ?cannibals ?shore)))))\n     (default\n        (switch ?cannibals\n           (case 0 then\n              (user-log \"CAM\" (format nil \"Move %d missionaries to %s.\" ?missionaries ?shore)))\n           (case 1 then\n              (user-log \"CAM\" (format nil \"Move %d missionaries and 1 cannibal to %s.\" \n                          ?missionaries ?shore)))\n           (default then\n              (user-log \"CAM\" (format nil \"Move %d missionary and %d cannibals to %s.\" \n                          ?missionaries ?cannibals ?shore))))))")
+	(title "MAIN::move-string"))
+
+([CAM_Class34] of  Comment
+
+	(source ";;;***********************\n;;;* GENERATE PATH RULES *\n;;;***********************")
+	(title "GENERATE PATH RULES"))
+
+([CAM_Class35] of  Rule
+
+	(lhs "?node <- (status (search-depth ?num) \n                   (boat-location shore-1)\n                   (shore-1-missionaries ?s1m)\n                   (shore-1-cannibals ?s1c)\n                   (shore-2-missionaries ?s2m)\n                   (shore-2-cannibals ?s2c))\n  (boat-can-hold ?limit)")
+	(rhs "(bind ?max-missionaries (min ?s1m ?limit))\n  (loop-for-count (?missionaries 0 ?max-missionaries)\n    (bind ?min-cannibals (max 0 (- 1 ?missionaries)))\n    (bind ?max-cannibals (min ?s1c (- ?limit ?missionaries)))\n    (loop-for-count (?cannibals ?min-cannibals ?max-cannibals)\n      (duplicate ?node (search-depth =(+ 1 ?num))\n                       (parent ?node)\n                       (shore-1-missionaries (- ?s1m ?missionaries))\n                       (shore-1-cannibals (- ?s1c ?cannibals))\n                       (shore-2-missionaries (+ ?s2m ?missionaries))\n                       (shore-2-cannibals (+ ?s2c ?cannibals))\n                       (boat-location shore-2)\n                       (last-move (move-string ?missionaries ?cannibals shore-2)))))")
+	(title "MAIN::shore-1-move"))
+
+([CAM_Class36] of  Rule
+
+	(lhs "?node <- (status (search-depth ?num) \n                   (boat-location shore-2)\n                   (shore-1-missionaries ?s1m)\n                   (shore-1-cannibals ?s1c)\n                   (shore-2-missionaries ?s2m)\n                   (shore-2-cannibals ?s2c))\n  (boat-can-hold ?limit)")
+	(rhs "(bind ?max-missionaries (min ?s2m ?limit))\n  (loop-for-count (?missionaries 0 ?max-missionaries)\n    (bind ?min-cannibals (max 0 (- 1 ?missionaries)))\n    (bind ?max-cannibals (min ?s2c (- ?limit ?missionaries)))\n    (loop-for-count (?cannibals ?min-cannibals ?max-cannibals)\n      (duplicate ?node (search-depth =(+ 1 ?num))\n                       (parent ?node)\n                       (shore-1-missionaries (+ ?s1m ?missionaries))\n                       (shore-1-cannibals (+ ?s1c ?cannibals))\n                       (shore-2-missionaries (- ?s2m ?missionaries))\n                       (shore-2-cannibals (- ?s2c ?cannibals))\n                       (boat-location shore-1)\n                       (last-move (move-string ?missionaries ?cannibals shore-1)))))")
+	(title "MAIN::shore-2-move"))
+
+([CAM_Class37] of  Comment
+
+	(source ";;;******************************\n;;;* CONSTRAINT VIOLATION RULES *\n;;;******************************")
+	(title "CONSTRAINT VIOLATION RULES"))
+
+([CAM_Class38] of  Module
+
+	(source "(import MAIN deftemplate status)")
+	(title "CONSTRAINTS"))
+
+([CAM_Class39] of  Rule
+
+	(auto-focus TRUE)
+	(lhs "?node <- (status (shore-1-missionaries ?s1m)\n                   (shore-1-cannibals ?s1c)\n                   (shore-2-missionaries ?s2m)\n                   (shore-2-cannibals ?s2c))\n  (test (or (and (> ?s2c ?s2m) (<> ?s2m 0))\n            (and (> ?s1c ?s1m) (<> ?s1m 0))))")
+	(rhs "(retract ?node)")
+	(title "CONSTRAINTS::cannibals-eat-missionaries"))
+
+([CAM_Class4] of  TemplateSlot
+
+	(aux "(range 1 ?VARIABLE)")
+	(title "search-depth")
+	(type "INTEGER"))
+
+([CAM_Class40] of  Rule
+
+	(auto-focus TRUE)
+	(lhs "(status (search-depth ?sd1)\n          (boat-location ?bl) \n          (shore-1-missionaries ?s1m)\n          (shore-1-cannibals ?s1c)\n          (shore-2-missionaries ?s2m)\n          (shore-2-cannibals ?s2c))\n  ?node <- (status (search-depth ?sd2&:(< ?sd1 ?sd2))\n                   (boat-location ?bl) \n                   (shore-1-missionaries ?s1m)\n                   (shore-1-cannibals ?s1c)\n                   (shore-2-missionaries ?s2m)\n                   (shore-2-cannibals ?s2c))")
+	(rhs "(retract ?node)")
+	(title "CONSTRAINTS::circular-path"))
+
+([CAM_Class41] of  Comment
+
+	(source ";;;*********************************\n;;;* FIND AND PRINT SOLUTION RULES *\n;;;*********************************")
+	(title "FIND AND PRINT SOLUTION RULES"))
+
+([CAM_Class42] of  Module
+
+	(source "(import MAIN deftemplate status)\n  (import MAIN defglobal initial-missionaries initial-cannibals)")
+	(title "SOLUTION"))
+
+([CAM_Class43] of  Template
+
+	(temp-slots
+		[CAM_Class44]
+		[CAM_Class45])
+	(title "SOLUTION::moves"))
+
+([CAM_Class44] of  TemplateSlot
+
+	(aux "(allowed-symbols no-parent)")
+	(title "id")
+	(type "FACT-ADDRESS SYMBOL"))
+
+([CAM_Class45] of  TemplateSlot
+
+	(multislot TRUE)
+	(title "moves-list")
+	(type "STRING"))
+
+([CAM_Class46] of  Rule
+
+	(auto-focus TRUE)
+	(lhs "?node <- (status (parent ?parent)\n                   (shore-2-missionaries ?m&:(= ?m ?*initial-missionaries*))\n                   (shore-2-cannibals ?c&:(= ?c ?*initial-cannibals*))\n                   (last-move ?move))")
+	(rhs "(retract ?node)\n  (assert (moves (id ?parent) (moves-list ?move)))")
+	(title "SOLUTION::recognize-solution"))
+
+([CAM_Class47] of  Rule
+
+	(lhs "?node <- (status (parent ?parent)\n                   (last-move ?move))\n  ?mv <- (moves (id ?node) (moves-list $?rest))")
+	(rhs "(modify ?mv (id ?parent) (moves-list ?move ?rest))")
+	(title "SOLUTION::further-solution"))
+
+([CAM_Class48] of  Rule
+
+	(lhs "?mv <- (moves (id no-parent) (moves-list \"No move.\" $?m))")
+	(rhs "(retract ?mv)\n(user-log \"CAM\" \"Solution found:\")\n(user-log \"CAM\" \"\")\n(progn$ (?move ?m) (user-log \"MAB\" (str-cat ?move)))\n(user-log \"CAM\" \"\")")
+	(title "SOLUTION::print-solution"))
+
+([CAM_Class5] of  ClpFile
+
+	(constructs
+		[CAM_Class6]
+		[CAM_Class7]
+		[CAM_Class8]
+		[CAM_Class9]
+		[CAM_Class18]
+		[CAM_Class19]
+		[CAM_Class20]
+		[CAM_Class30]
+		[CAM_Class32]
+		[CAM_Class33]
+		[CAM_Class34]
+		[CAM_Class35]
+		[CAM_Class36]
+		[CAM_Class37]
+		[CAM_Class38]
+		[CAM_Class39]
+		[CAM_Class40]
+		[CAM_Class41]
+		[CAM_Class42]
+		[CAM_Class43]
+		[CAM_Class46]
+		[CAM_Class47]
+		[CAM_Class48])
+	(path "clp/cam24.clp")
+	(title "Cannibals and Missionaries Problem"))
+
+([CAM_Class6] of  Comment
+
+	(source ";;;======================================================\n;;;   Cannibals and Missionaries Problem\n;;;\n;;;     Another classic AI problem. The point is\n;;;     to get three cannibals and three missionaries\n;;;     across a stream with a boat that can only\n;;;     hold two people. If the cannibals outnumber\n;;;     the missionaries on either side of the stream,\n;;;     then the cannibals will eat the missionaries.\n;;;\n;;;     CLIPS Version 6.01 Example\n;;;\n;;;     To execute, merely load, reset and run.\n;;;======================================================")
+	(title "Cannibals and Missionaries Problem"))
+
+([CAM_Class7] of  Module
+
+	(source "(export deftemplate status)\n  (export defglobal initial-missionaries initial-cannibals)")
+	(title "MAIN"))
+
+([CAM_Class8] of  Comment
+
+	(source ";;;*************\n;;;* TEMPLATES *\n;;;*************\n\n;;; The status facts hold the state  \n;;; information of the search tree.")
+	(title "TEMPLATES"))
+
+([CAM_Class9] of  Template
+
+	(temp-slots
+		[CAM_Class10]
+		[CAM_Class11]
+		[CAM_Class12]
+		[CAM_Class13]
+		[CAM_Class14]
+		[CAM_Class15]
+		[CAM_Class16]
+		[CAM_Class17])
+	(title "MAIN::status"))
+
+([MABCAM_Class0] of  Loader
+
+	(cloPrograms
+		[ProClojure_Class20012]
+		[CLIPSProInterface_Class6]
+		[CLIPSProCommunicator_Class0])
+	(title "MABCAM Loader"))
+
+([MABCAM_Class10000] of  Evaluator
+
+	(envalues
+		[MABCAM_Class10002]
+		[MABCAM_Class10006]
+		[MABCAM_Class10008]
+		[MABCAM_Class80001])
+	(funcalls
+		[MABCAM_Class10001]
+		[MABCAM_Class10003]
+		[MABCAM_Class10004]
+		[MABCAM_Class10005]
+		[MABCAM_Class10007]
+		[MABCAM_Class70001]
+		[MABCAM_Class60000])
+	(result-variable "RESULT")
+	(title "Evaluator1"))
+
+([MABCAM_Class100002] of  Message
+
+	(text "Hello Ru!")
+	(title "Hello"))
+
+([MABCAM_Class100003] of  ClpFile
+
+	(constructs
+		[MABCAM_Class100004]
+		[MABCAM_Class100005])
+	(path "clp/Hello.clp")
+	(title "Hello"))
+
+([MABCAM_Class100004] of  Rule
+
+	(rhs "(user-input \"My name is\" \"What is your name?\")")
+	(title "Ask-name"))
+
+([MABCAM_Class100005] of  Rule
+
+	(lhs "(My name is ?name)")
+	(rhs "(user-message \"Hello\" (format nil \"Hello %s!\" ?name))")
+	(salience 0)
+	(title "Hello"))
+
+([MABCAM_Class10001] of  Funcall
+
+	(arguments "[1]")
+	(function [ClojureCLIPSJNI_Class28]))
+
+([MABCAM_Class10002] of  Envalue
+
+	(N 1)
+	(value "\"clo/auto44.clp\""))
+
+([MABCAM_Class100020] of  CloFuncall
+
+	(source "(get-eval-value \"(facts)\")"))
+
+([MABCAM_Class10003] of  Funcall
+
+	(arguments "[]")
+	(function [ClojureCLIPSJNI_Class32]))
+
+([MABCAM_Class10004] of  Funcall
+
+	(arguments "[]")
+	(function [ClojureCLIPSJNI_Class33]))
+
+([MABCAM_Class10005] of  Funcall
+
+	(arguments "[2]")
+	(function [ClojureCLIPSJNI_Class22]))
+
+([MABCAM_Class10006] of  Envalue
+
+	(N 2)
+	(value "\"(facts)\""))
+
+([MABCAM_Class10007] of  Funcall
+
+	(arguments "[3]")
+	(function [ClojureCLIPSJNI_Class22]))
+
+([MABCAM_Class10008] of  Envalue
+
+	(N 3)
+	(value "\"(user-confirm \\\"title\\\" \\\"mess\\\")\""))
+
+([MABCAM_Class110002] of  Log
+
+	(text "Monkey jumps off the green-couch onto the floor.\nMonkey walks to t2-2.\nMonkey climbs onto the red-couch.\nMonkey climbs onto the big-pillow.\nMonkey grabs the red-chest.\nMonkey throws the red-chest off the big-pillow onto the floor.\nMonkey jumps off the big-pillow onto the floor.\nMonkey walks to t1-3.\nMonkey grabs the red-key.\nMonkey walks to t2-2 holding the red-key.\nMonkey opens the red-chest with the red-key revealing the ladder.\nMonkey drops the red-key.\nMonkey climbs onto the red-chest.\nMonkey grabs the ladder.\nMonkey jumps off the red-chest onto the floor.\nMonkey walks to t7-7 holding the ladder.\nMonkey drops the ladder.\nMonkey climbs onto the ladder.\nMonkey grabs the blue-chest.\nMonkey throws the blue-chest off the ladder onto the floor.\nMonkey jumps off the ladder onto the floor.\nMonkey grabs the ladder.\nMonkey walks to t8-8 holding the ladder.\nMonkey drops the ladder.\nMonkey climbs onto the ladder.\nMonkey grabs the green-chest.\nMonkey throws the green-chest off the ladder onto the floor.\nMonkey jumps off the ladder onto the floor.\nMonkey walks to t2-2.\nMonkey grabs the red-key.\nMonkey walks to t8-8 holding the red-key.\nMonkey opens the green-chest with the red-key revealing the blue-key.\nMonkey drops the red-key.\nMonkey climbs onto the green-chest.\nMonkey grabs the blue-key.\nMonkey jumps off the green-chest onto the floor.\nMonkey walks to t7-7 holding the blue-key.\nMonkey opens the blue-chest with the blue-key revealing the bananas.\nMonkey drops the blue-key.\nMonkey climbs onto the blue-chest.\nMonkey grabs the bananas.\nMonkey eats the bananas.\nMove 1 missionary and 1 cannibal to shore-2.\n\nMove 1 missionary to shore-1.\n\nMove 2 cannibals to shore-2.\n\nMove 1 cannibal to shore-1.\n\nMove 2 missionaries to shore-2.\n\nMove 1 missionary and 1 cannibal to shore-1.\n\nMove 2 missionaries to shore-2.\n\nMove 1 cannibal to shore-1.\n\nMove 2 cannibals to shore-2.\n\nMove 1 missionary to shore-1.\n\nMove 1 missionary and 1 cannibal to shore-2.\n\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\nMonkey jumps off the green-couch onto the floor.\nMonkey walks to t2-2.\nMonkey climbs onto the red-couch.\nMonkey climbs onto the big-pillow.\nMonkey grabs the red-chest.\nMonkey throws the red-chest off the big-pillow onto the floor.\nMonkey jumps off the big-pillow onto the floor.\nMonkey walks to t1-3.\nMonkey grabs the red-key.\nMonkey walks to t2-2 holding the red-key.\nMonkey opens the red-chest with the red-key revealing the ladder.\nMonkey drops the red-key.\nMonkey climbs onto the red-chest.\nMonkey grabs the ladder.\nMonkey jumps off the red-chest onto the floor.\nMonkey walks to t7-7 holding the ladder.\nMonkey drops the ladder.\nMonkey climbs onto the ladder.\nMonkey grabs the blue-chest.\nMonkey throws the blue-chest off the ladder onto the floor.\nMonkey jumps off the ladder onto the floor.\nMonkey grabs the ladder.\nMonkey walks to t8-8 holding the ladder.\nMonkey drops the ladder.\nMonkey climbs onto the ladder.\nMonkey grabs the green-chest.\nMonkey throws the green-chest off the ladder onto the floor.\nMonkey jumps off the ladder onto the floor.\nMonkey walks to t2-2.\nMonkey grabs the red-key.\nMonkey walks to t8-8 holding the red-key.\nMonkey opens the green-chest with the red-key revealing the blue-key.\nMonkey drops the red-key.\nMonkey climbs onto the green-chest.\nMonkey grabs the blue-key.\nMonkey jumps off the green-chest onto the floor.\nMonkey walks to t7-7 holding the blue-key.\nMonkey opens the blue-chest with the blue-key revealing the bananas.\nMonkey drops the blue-key.\nMonkey climbs onto the blue-chest.\nMonkey grabs the bananas.\nMonkey eats the bananas.")
+	(title "MAB"))
+
+([MABCAM_Class110005] of  Log
+
+	(text "Move 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 2 cannibals to shore-1.\nMove 1 cannibal to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 2 cannibals to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 2 missionaries to shore-1.\nMove 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 2 missionaries to shore-1.\nMove 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 cannibal to shore-1.\nMove 2 cannibals to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 2 missionaries to shore-1.\nMove 1 cannibal to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nSolution found:\n\n\nMove 1 cannibal to shore-2.")
+	(title "CAM"))
+
+([MABCAM_Class20000] of  ClpFile
+
+	(constructs
+		[MABCAM_Class20001]
+		[CAM_Class8]
+		[MABCAM_Class20002]
+		[MABCAM_Class30000]
+		[MABCAM_Class40005]
+		[MABCAM_Class40008]
+		[MABCAM_Class50000]
+		[MABCAM_Class50001]
+		[MABCAM_Class50002]
+		[MABCAM_Class50003]
+		[MABCAM_Class50004]
+		[MABCAM_Class50005]
+		[MABCAM_Class50007]
+		[MABCAM_Class50006]
+		[MABCAM_Class50008]
+		[MABCAM_Class50009]
+		[MABCAM_Class50010]
+		[MABCAM_Class50011]
+		[MABCAM_Class50012]
+		[MABCAM_Class50013]
+		[MABCAM_Class50014]
+		[MABCAM_Class50015]
+		[MABCAM_Class50016]
+		[MABCAM_Class50017]
+		[MABCAM_Class50018]
+		[MABCAM_Class50019]
+		[MABCAM_Class50020]
+		[MABCAM_Class50021]
+		[MABCAM_Class50022]
+		[MABCAM_Class50023]
+		[MABCAM_Class50024]
+		[MABCAM_Class50025]
+		[MABCAM_Class50026]
+		[MABCAM_Class50027]
+		[MABCAM_Class50028]
+		[MABCAM_Class50029]
+		[MABCAM_Class50030]
+		[MABCAM_Class50031]
+		[MABCAM_Class50032]
+		[MABCAM_Class50033]
+		[MABCAM_Class50034]
+		[MABCAM_Class50035]
+		[MABCAM_Class50036]
+		[MABCAM_Class50037]
+		[MABCAM_Class50038])
+	(path "clp/mab24.clp")
+	(title "Monkees and Bananas Problem"))
+
+([MABCAM_Class20001] of  Comment
+
+	(source ";;;======================================================\n;;;   Monkees and Bananas Sample Problem\n;;;\n;;;     This is an extended version of a\n;;;     rather common AI planning problem.\n;;;     The point is for the monkee to find\n;;;     and eat some bananas.\n;;;\n;;;     CLIPS Version 6.0 Example\n;;;\n;;;     To execute, merely load, reset and run.\n;;;======================================================")
+	(title "Monkees and Bananas Sample Problem"))
+
+([MABCAM_Class20002] of  Template
+
+	(temp-slots
+		[MABCAM_Class20003]
+		[MABCAM_Class20004]
+		[MABCAM_Class20005])
+	(title "monkey"))
+
+([MABCAM_Class20003] of  TemplateSlot
+
+	(aux "(default green-couch)")
+	(multislot FALSE)
+	(title "location")
+	(type "SYMBOL"))
+
+([MABCAM_Class20004] of  TemplateSlot
+
+	(aux "(default floor)")
+	(multislot FALSE)
+	(title "on-top-of")
+	(type "SYMBOL"))
+
+([MABCAM_Class20005] of  TemplateSlot
+
+	(aux "(default nothing)")
+	(multislot FALSE)
+	(title "holding")
+	(type "SYMBOL"))
+
+([MABCAM_Class30000] of  Template
+
+	(temp-slots
+		[MABCAM_Class30001]
+		[MABCAM_Class30002]
+		[MABCAM_Class20004]
+		[MABCAM_Class40004])
+	(title "thing"))
+
+([MABCAM_Class30001] of  TemplateSlot
+
+	(aux "(default ?NONE)")
+	(multislot FALSE)
+	(title "name")
+	(type "SYMBOL"))
+
+([MABCAM_Class30002] of  TemplateSlot
+
+	(aux "(default ?NONE)")
+	(multislot FALSE)
+	(title "location")
+	(type "SYMBOL"))
+
+([MABCAM_Class40000] of  CloProgram
+
+	(cloFunctions [Clojure_Class300000])
+	(cloNamespace [Clojure_Class300001])
+	(title "Clojure Works"))
+
+([MABCAM_Class40002] of  WorkingPrograms
+
+	(butt-load-progs "Load Programs/protege.core/ldns")
+	(cloPrograms
+		[ProClojure_Class20012]
+		[CLIPSProInterface_Class6]
+		[CLIPSProCommunicator_Class0])
+	(title "MABCAM Working Programs"))
+
+([MABCAM_Class40003] of  %3AINSTANCE-ANNOTATION
+
+	(%3AANNOTATED-INSTANCE [MABCAM_Class40002])
+	(%3ACREATION-TIMESTAMP "2024.02.19 10:48:02.481 MSK")
+	(%3ACREATOR "ru"))
+
+([MABCAM_Class40004] of  TemplateSlot
+
+	(aux "(allowed-symbols light heavy) (default light)")
+	(multislot FALSE)
+	(title "weight")
+	(type "SYMBOL"))
+
+([MABCAM_Class40005] of  Template
+
+	(temp-slots
+		[MABCAM_Class30001]
+		[MABCAM_Class40006]
+		[MABCAM_Class40007])
+	(title "chest"))
+
+([MABCAM_Class40006] of  TemplateSlot
+
+	(aux "(default ?NONE)")
+	(multislot FALSE)
+	(title "contents")
+	(type "SYMBOL"))
+
+([MABCAM_Class40007] of  TemplateSlot
+
+	(aux "(default ?NONE)")
+	(multislot FALSE)
+	(title "unlocked-by")
+	(type "SYMBOL"))
+
+([MABCAM_Class40008] of  Template
+
+	(temp-slots
+		[MABCAM_Class40009]
+		[MABCAM_Class40010])
+	(title "goal-is-to"))
+
+([MABCAM_Class40009] of  TemplateSlot
+
+	(aux "(allowed-symbols hold unlock eat move on walk-to)\n  (default ?NONE)")
+	(multislot TRUE)
+	(title "action")
+	(type "SYMBOL"))
+
+([MABCAM_Class40010] of  TemplateSlot
+
+	(aux "(default ?NONE)")
+	(multislot TRUE)
+	(title "arguments")
+	(type "SYMBOL"))
+
+([MABCAM_Class50000] of  Comment
+
+	(source ";;;*************************\n;;;* CHEST UNLOCKING RULES *\n;;;*************************")
+	(title "CHEST UNLOCKING RULES"))
+
+([MABCAM_Class50001] of  Rule
+
+	(lhs "(goal-is-to (action unlock) (arguments ?chest))\n  (thing (name ?chest) (on-top-of ~floor) (weight light))\n  (monkey (holding ~?chest))\n  (not (goal-is-to (action hold) (arguments ?chest)))")
+	(rhs "(assert (goal-is-to (action hold) (arguments ?chest)))")
+	(title "hold-chest-to-put-on-floor"))
+
+([MABCAM_Class50002] of  Rule
+
+	(lhs "(goal-is-to (action unlock) (arguments ?chest))\n  ?monkey <- (monkey (location ?place) (on-top-of ?on) (holding ?chest))\n  ?thing <- (thing (name ?chest))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey throws the \" ?chest \" off the \" \n              ?on \" onto the floor.\" ))\n  (modify ?monkey (holding blank))\n  (modify ?thing (location ?place) (on-top-of floor))")
+	(title "put-chest-on-floor"))
+
+([MABCAM_Class50003] of  Rule
+
+	(lhs "(goal-is-to (action unlock) (arguments ?obj))\n  (thing (name ?obj) (on-top-of floor))\n  (chest (name ?obj) (unlocked-by ?key))\n  (monkey (holding ~?key))\n  (not (goal-is-to (action hold) (arguments ?key)))")
+	(rhs "(assert (goal-is-to (action hold) (arguments ?key)))")
+	(title "get-key-to-unlock"))
+
+([MABCAM_Class50004] of  Rule
+
+	(lhs "(goal-is-to (action unlock) (arguments ?chest))\n  (monkey (location ?mplace) (holding ?key))\n  (thing (name ?chest) (location ?cplace&~?mplace) (on-top-of floor))\n  (chest (name ?chest) (unlocked-by ?key))\n  (not (goal-is-to (action walk-to) (arguments ?cplace)))")
+	(rhs "(assert (goal-is-to (action walk-to) (arguments ?cplace)))")
+	(title "move-to-chest-with-key"))
+
+([MABCAM_Class50005] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action unlock) (arguments ?name))\n  ?chest <- (chest (name ?name) (contents ?contents) (unlocked-by ?key))\n  (thing (name ?name) (location ?place) (on-top-of ?on))\n  (monkey (location ?place) (on-top-of ?on) (holding ?key))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey opens the \" ?name \" with the \" ?key \n              \" revealing the \" ?contents \".\"))\n  (modify ?chest (contents nothing))\n  (assert (thing (name ?contents) (location ?place) (on-top-of ?name)))\n  (retract ?goal)")
+	(title "unlock-chest-with-key"))
+
+([MABCAM_Class50006] of  Rule
+
+	(lhs "(goal-is-to (action hold) (arguments ?obj))\n  (chest (name ?chest) (contents ?obj))\n  (not (goal-is-to (action unlock) (arguments ?chest)))")
+	(rhs "(assert (goal-is-to (action unlock) (arguments ?chest)))")
+	(title "unlock-chest-to-hold-object"))
+
+([MABCAM_Class50007] of  Comment
+
+	(source ";;;*********************\n;;;* HOLD OBJECT RULES * \n;;;*********************")
+	(title "HOLD OBJECT RULES"))
+
+([MABCAM_Class50008] of  Rule
+
+	(lhs "(goal-is-to (action hold) (arguments ?obj))\n  (thing (name ?obj) (location ?place) (on-top-of ceiling) (weight light))\n  (not (thing (name ladder) (location ?place)))\n  (not (goal-is-to (action move) (arguments ladder ?place)))")
+	(rhs "(assert (goal-is-to (action move) (arguments ladder ?place)))")
+	(title "use-ladder-to-hold"))
+
+([MABCAM_Class50009] of  Rule
+
+	(lhs "(goal-is-to (action hold) (arguments ?obj))\n  (thing (name ?obj) (location ?place) (on-top-of ceiling) (weight light))\n  (thing (name ladder) (location ?place) (on-top-of floor))\n  (monkey (on-top-of ~ladder))\n  (not (goal-is-to (action on) (arguments ladder)))")
+	(rhs "(assert (goal-is-to (action on) (arguments ladder)))")
+	(title "climb-ladder-to-hold"))
+
+([MABCAM_Class50010] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action hold) (arguments ?name))\n  ?thing <- (thing (name ?name) (location ?place) \n                     (on-top-of ceiling) (weight light))\n  (thing (name ladder) (location ?place))\n  ?monkey <- (monkey (location ?place) (on-top-of ladder) (holding blank))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey grabs the \" ?name \".\"))\n  (modify ?thing (location held) (on-top-of held))\n  (modify ?monkey (holding ?name))\n  (retract ?goal)")
+	(title "grab-object-from-ladder"))
+
+([MABCAM_Class50011] of  Rule
+
+	(lhs "(goal-is-to (action hold) (arguments ?obj))\n  (thing (name ?obj) (location ?place) (on-top-of ?on&~ceiling) (weight light))\n  (monkey (location ?place) (on-top-of ~?on))\n  (not (goal-is-to (action on) (arguments ?on)))")
+	(rhs "(assert (goal-is-to (action on) (arguments ?on)))")
+	(title "climb-to-hold"))
+
+([MABCAM_Class50012] of  Rule
+
+	(lhs "(goal-is-to (action hold) (arguments ?obj))\n  (thing (name ?obj) (location ?place) (on-top-of ~ceiling) (weight light))\n  (monkey (location ~?place))\n  (not (goal-is-to (action walk-to) (arguments ?place)))")
+	(rhs "(assert (goal-is-to (action walk-to) (arguments ?place)))")
+	(title "walk-to-hold"))
+
+([MABCAM_Class50013] of  Rule
+
+	(lhs "(goal-is-to (action hold) (arguments ?obj))\n  (thing (name ?obj) (location ?place) (on-top-of ?on) (weight light))\n  (monkey (location ?place) (on-top-of ?on) (holding ~blank))\n  (not (goal-is-to (action hold) (arguments blank)))")
+	(rhs "(assert (goal-is-to (action hold) (arguments blank)))")
+	(title "drop-to-hold"))
+
+([MABCAM_Class50014] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action hold) (arguments ?name))\n  ?thing <- (thing (name ?name) (location ?place) \n                     (on-top-of ?on) (weight light))\n  ?monkey <- (monkey (location ?place) (on-top-of ?on) (holding blank))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey grabs the \" ?name \".\"))\n  (modify ?thing (location held) (on-top-of held))\n  (modify ?monkey (holding ?name))\n  (retract ?goal)")
+	(title "grab-object"))
+
+([MABCAM_Class50015] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action hold) (arguments blank))\n  ?monkey <- (monkey (location ?place) \n                     (on-top-of ?on) \n                     (holding ?name&~blank))\n  ?thing <- (thing (name ?name))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey drops the \" ?name \".\"))\n  (modify ?monkey (holding blank))\n  (modify ?thing (location ?place) (on-top-of ?on))\n  (retract ?goal)")
+	(title "drop-object"))
+
+([MABCAM_Class50016] of  Comment
+
+	(source ";;;*********************\n;;;* MOVE OBJECT RULES * \n;;;*********************")
+	(title "MOVE OBJECT RULES"))
+
+([MABCAM_Class50017] of  Rule
+
+	(lhs "(goal-is-to (action move) (arguments ?obj ?))\n  (chest (name ?chest) (contents ?obj))\n  (not (goal-is-to (action unlock) (arguments ?chest)))")
+	(rhs "(assert (goal-is-to (action unlock) (arguments ?chest)))")
+	(title "unlock-chest-to-move-object"))
+
+([MABCAM_Class50018] of  Rule
+
+	(lhs "(goal-is-to (action move) (arguments ?obj ?place))\n  (thing (name ?obj) (location ~?place) (weight light))\n  (monkey (holding ~?obj))\n  (not (goal-is-to (action hold) (arguments ?obj)))")
+	(rhs "(assert (goal-is-to (action hold) (arguments ?obj)))")
+	(title "hold-object-to-move"))
+
+([MABCAM_Class50019] of  Rule
+
+	(lhs "(goal-is-to (action move) (arguments ?obj ?place))\n  (monkey (location ~?place) (holding ?obj))\n  (not (goal-is-to (action walk-to) (arguments ?place)))")
+	(rhs "(assert (goal-is-to (action walk-to) (arguments ?place)))")
+	(title "move-object-to-place"))
+
+([MABCAM_Class50020] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action move) (arguments ?name ?place))\n  ?monkey <- (monkey (location ?place) (holding ?obj))\n  ?thing <- (thing (name ?name) (weight light))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey drops the \" ?name \".\"))\n  (modify ?monkey (holding blank))\n  (modify ?thing (location ?place) (on-top-of floor))\n  (retract ?goal)")
+	(title "drop-object-once-moved"))
+
+([MABCAM_Class50021] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action move) (arguments ?obj ?place))\n  (thing (name ?obj) (location ?place))")
+	(rhs "(retract ?goal)")
+	(title "already-moved-object"))
+
+([MABCAM_Class50022] of  Comment
+
+	(source ";;;***********************\n;;;* WALK TO PLACE RULES *\n;;;***********************")
+	(title "WALK TO PLACE RULES"))
+
+([MABCAM_Class50023] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action walk-to) (arguments ?place))\n  (monkey (location ?place))")
+	(rhs "(retract ?goal)")
+	(title "already-at-place"))
+
+([MABCAM_Class50024] of  Rule
+
+	(lhs "(goal-is-to (action walk-to) (arguments ?place))\n  (monkey (location ~?place) (on-top-of ~floor))\n  (not (goal-is-to (action on) (arguments floor)))")
+	(rhs "(assert (goal-is-to (action on) (arguments floor)))")
+	(title "get-on-floor-to-walk"))
+
+([MABCAM_Class50025] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action walk-to) (arguments ?place))\n  ?monkey <- (monkey (location ~?place) (on-top-of floor) (holding blank))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey walks to \" ?place \".\"))\n  (modify ?monkey (location ?place))\n  (retract ?goal)")
+	(title "walk-holding-nothing"))
+
+([MABCAM_Class50026] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action walk-to) (arguments ?place))\n  ?monkey <- (monkey (location ~?place) (on-top-of floor) (holding ?obj&~blank))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey walks to \" ?place \" holding the \" ?obj \".\"))\n  (modify ?monkey (location ?place))\n  (retract ?goal)")
+	(title "walk-holding-object"))
+
+([MABCAM_Class50027] of  Comment
+
+	(source ";;;***********************\n;;;* GET ON OBJECT RULES * \n;;;***********************")
+	(title "GET ON OBJECT RULES"))
+
+([MABCAM_Class50028] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action on) (arguments floor))\n  ?monkey <- (monkey (on-top-of ?on&~floor))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey jumps off the \" ?on \" onto the floor.\"))\n  (modify ?monkey (on-top-of floor))\n  (retract ?goal)")
+	(title "jump-onto-floor"))
+
+([MABCAM_Class50029] of  Rule
+
+	(lhs "(goal-is-to (action on) (arguments ?obj))\n  (thing (name ?obj) (location ?place))\n  (monkey (location ~?place))\n  (not (goal-is-to (action walk-to) (arguments ?place)))")
+	(rhs "(assert (goal-is-to (action walk-to) (arguments ?place)))")
+	(title "walk-to-place-to-climb"))
+
+([MABCAM_Class50030] of  Rule
+
+	(lhs "(goal-is-to (action on) (arguments ?obj))\n  (thing (name ?obj) (location ?place))\n  (monkey (location ?place) (holding ~blank))\n  (not (goal-is-to (action hold) (arguments blank)))")
+	(rhs "(assert (goal-is-to (action hold) (arguments blank)))")
+	(title "drop-to-climb"))
+
+([MABCAM_Class50031] of  Rule
+
+	(lhs "(goal-is-to (action on) (arguments ?obj))\n  (thing (name ?obj) (location ?place) (on-top-of ?on))\n  (monkey (location ?place) (on-top-of ~?on&~?obj) (holding blank))\n  (not (goal-is-to (action on) (arguments ?on)))")
+	(rhs "(assert (goal-is-to (action on) (arguments ?on)))")
+	(title "climb-indirectly"))
+
+([MABCAM_Class50032] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action on) (arguments ?obj))\n  (thing (name ?obj) (location ?place) (on-top-of ?on))\n  ?monkey <- (monkey (location ?place) (on-top-of ?on) (holding blank))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey climbs onto the \" ?obj \".\"))\n  (modify ?monkey (on-top-of ?obj))\n  (retract ?goal)")
+	(title "climb-directly"))
+
+([MABCAM_Class50033] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action on) (arguments ?obj))\n  (monkey (on-top-of ?obj))")
+	(rhs "(retract ?goal)")
+	(title "already-on-object"))
+
+([MABCAM_Class50034] of  Comment
+
+	(source ";;;********************\n;;;* EAT OBJECT RULES * \n;;;********************")
+	(title "EAT OBJECT RULES"))
+
+([MABCAM_Class50035] of  Rule
+
+	(lhs "(goal-is-to (action eat) (arguments ?obj))\n  (monkey (holding ~?obj))\n  (not (goal-is-to (action hold) (arguments ?obj)))")
+	(rhs "(assert (goal-is-to (action hold) (arguments ?obj)))")
+	(title "hold-to-eat"))
+
+([MABCAM_Class50036] of  Rule
+
+	(lhs "?goal <- (goal-is-to (action eat) (arguments ?name))\n  ?monkey <- (monkey (holding ?name))\n  ?thing <- (thing (name ?name))")
+	(rhs "(user-log \"MAB\" (str-cat \"Monkey eats the \" ?name \".\"))\n  (modify ?monkey (holding blank))\n  (retract ?goal ?thing)")
+	(title "satisfy-hunger"))
+
+([MABCAM_Class50037] of  Comment
+
+	(source ";;;**********************\n;;;* INITIAL STATE RULE * \n;;;**********************")
+	(title "INITIAL STATE RULE"))
+
+([MABCAM_Class50038] of  Rule
+
+	(rhs "(assert (monkey (location t5-7) (on-top-of green-couch) (holding blank)))\n  (assert (thing (name green-couch) (location t5-7) (weight heavy)))\n  (assert (thing (name red-couch) (location t2-2) (weight heavy)))\n  (assert (thing (name big-pillow) (location t2-2) (on-top-of red-couch)))\n  (assert (thing (name red-chest) (location t2-2) (on-top-of big-pillow)))\n  (assert (chest (name red-chest) (contents ladder) (unlocked-by red-key)))\n  (assert (thing (name blue-chest) (location t7-7) (on-top-of ceiling)))\n  (assert (chest (name blue-chest) (contents bananas) (unlocked-by blue-key)))\n  (assert (thing (name blue-couch) (location t8-8) (weight heavy)))\n  (assert (thing (name green-chest) (location t8-8) (on-top-of ceiling)))\n  (assert (chest (name green-chest) (contents blue-key) (unlocked-by red-key)))\n  (assert (thing (name red-key) (location t1-3)))\n  (assert (goal-is-to (action eat) (arguments bananas)))")
+	(title "startup"))
+
+([MABCAM_Class50039] of  Function
+
+	(arguments "(?s)")
+	(source "(println ?s)")
+	(title "note"))
+
+([MABCAM_Class60000] of  Funcall
+
+	(arguments "[4]")
+	(function [ClojureCLIPSJNI_Class28]))
+
+([MABCAM_Class70000] of  CloFuncall
+
+	(source "(do (clear) (load-constructs \"clp/mab24.clp\") (reset) (run))"))
+
+([MABCAM_Class70001] of  Funcall
+
+	(arguments "[]")
+	(function [ClojureCLIPSJNI_Class31]))
+
+([MABCAM_Class80000] of  ClpFile
+
+	(constructs
+		[MABCAM_Class90001]
+		[MABCAM_Class90002]
+		[MABCAM_Class90003]
+		[MABCAM_Class90004]
+		[MABCAM_Class90005]
+		[MABCAM_Class90006]
+		[MABCAM_Class90007]
+		[MABCAM_Class90008]
+		[MABCAM_Class90009]
+		[MABCAM_Class90010]
+		[MABCAM_Class90011]
+		[MABCAM_Class90012]
+		[MABCAM_Class90013]
+		[MABCAM_Class90014]
+		[MABCAM_Class90015]
+		[MABCAM_Class90016]
+		[MABCAM_Class90017]
+		[MABCAM_Class90018]
+		[MABCAM_Class90019]
+		[MABCAM_Class90020]
+		[MABCAM_Class90021]
+		[MABCAM_Class90022]
+		[MABCAM_Class90023]
+		[MABCAM_Class90024]
+		[MABCAM_Class90025]
+		[MABCAM_Class90026]
+		[MABCAM_Class90027]
+		[MABCAM_Class90028]
+		[MABCAM_Class90029]
+		[MABCAM_Class90030]
+		[MABCAM_Class90031]
+		[MABCAM_Class90032]
+		[MABCAM_Class90033]
+		[MABCAM_Class90034]
+		[MABCAM_Class90035]
+		[MABCAM_Class90036])
+	(path "clp/auto24.clp")
+	(title "Automotive Expert System"))
+
+([MABCAM_Class80001] of  Envalue
+
+	(N 4)
+	(value "\"clo/mab.clp\""))
+
+([MABCAM_Class90001] of  Comment
+
+	(source ";;;======================================================\n;;;   Automotive Expert System\n;;;\n;;;     This expert system diagnoses some simple\n;;;     problems with a car.\n;;;\n;;;     CLIPS Version 6.0 Example\n;;;\n;;;     To execute, merely load, reset and run.\n;;;======================================================")
+	(title "Automotive Expert System"))
+
+([MABCAM_Class90002] of  Comment
+
+	(source ";;;**********************\n;;;* ENGINE STATE RULES *\n;;;**********************")
+	(title "ENGINE STATE RULES"))
+
+([MABCAM_Class90003] of  Rule
+
+	(lhs "(working-state engine normal)")
+	(rhs "(assert (repair \"No repair needed.\"))\n(assert (spark-state engine normal))\n(assert (charge-state battery charged))\n(assert (rotation-state engine rotates))")
+	(salience 10)
+	(title "normal-engine-state-conclusions"))
+
+([MABCAM_Class90004] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)")
+	(rhs "(assert (charge-state battery charged))\n(assert (rotation-state engine rotates))")
+	(salience 10)
+	(title "unsatisfactory-engine-state-conclusions"))
+
+([MABCAM_Class90005] of  Comment
+
+	(source ";;;***************\n;;;* QUERY RULES *\n;;;***************")
+	(title "QUERY RULES"))
+
+([MABCAM_Class90006] of  Rule
+
+	(lhs "(not (working-state engine ?))\n(not (repair ?))")
+	(rhs "(assert (q (gensym)))\n(user-confirm \"engine start\" \"Does the engine start (yes/no)? \")")
+	(title "determine-engine-state1"))
+
+([MABCAM_Class90007] of  Rule
+
+	(lhs "(engine start yes)")
+	(rhs "(user-confirm \"engine run normally\" \"Does the engine run normally (yes/no)? \")")
+	(title "determine-engine-state2"))
+
+([MABCAM_Class90008] of  Rule
+
+	(lhs "(engine run normally yes)\n?q <- (q ?)")
+	(rhs "(assert (working-state engine normal))\n(retract ?q)")
+	(title "determine-engine-state3"))
+
+([MABCAM_Class90009] of  Rule
+
+	(lhs "(engine run normally no)\n?q <- (q ?)")
+	(rhs "(assert (working-state engine unsatisfactory))\n(retract ?q)")
+	(title "determine-engine-state4"))
+
+([MABCAM_Class90010] of  Rule
+
+	(lhs "(engine start no)\n?q <- (q ?)")
+	(rhs "(assert (working-state engine does-not-start))\n(retract ?q)")
+	(title "determine-engine-state5"))
+
+([MABCAM_Class90011] of  Rule
+
+	(lhs "(working-state engine does-not-start)\n(not (rotation-state engine ?))\n(not (repair ?))")
+	(rhs "(assert (q (gensym)))\n(user-confirm \"engine rotate\" \"Does the engine rotate (yes/no)? \")")
+	(title "determine-rotation-state1"))
+
+([MABCAM_Class90012] of  Rule
+
+	(lhs "(engine rotate yes)\n?q <- (q ?)")
+	(rhs "(assert (rotation-state engine rotates))\n(assert (spark-state engine irregular-spark))\n (retract ?q)")
+	(title "determine-rotation-state2"))
+
+([MABCAM_Class90013] of  Rule
+
+	(lhs "(engine rotate no)\n?q <- (q ?)")
+	(rhs "(assert (rotation-state engine does-not-rotate))       \n(assert (spark-state engine does-not-spark))\n(retract ?q)")
+	(title "determine-rotation-state3"))
+
+([MABCAM_Class90014] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)\n(not (repair ?))")
+	(rhs "(assert (q (gensym)))\n(user-confirm \"engine sluggish\" \"Is the engine sluggish (yes/no)? \")")
+	(title "determine-sluggishness1"))
+
+([MABCAM_Class90015] of  Rule
+
+	(lhs "(engine sluggish yes)\n?q <- (q ?)")
+	(rhs "(assert (repair \"Clean the fuel line.\"))\n (retract ?q)")
+	(title "determine-sluggishness2"))
+
+([MABCAM_Class90016] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)\n(not (repair ?))")
+	(rhs "(assert (q (gensym)))\n(user-confirm \"engine misfire\" \"Does the engine misfire (yes/no)? \")")
+	(title "determine-misfiring1"))
+
+([MABCAM_Class90017] of  Rule
+
+	(lhs "(engine misfire yes)\n?q <- (q ?)")
+	(rhs "(assert (repair \"Point gap adjustment.\"))       \n(assert (spark-state engine irregular-spark))\n(retract ?q)")
+	(title "determine-misfiring2"))
+
+([MABCAM_Class90018] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)\n(not (repair ?))")
+	(rhs "(assert (q (gensym)))\n(user-confirm \"engine knock\" \"Does the engine knock (yes/no)? \")")
+	(title "determine-knocking1"))
+
+([MABCAM_Class90019] of  Rule
+
+	(lhs "(engine knock yes)\n?q <- (q ?)")
+	(rhs "(assert (repair \"Timing adjustment.\"))\n(retract ?q)")
+	(title "determine-knocking2"))
+
+([MABCAM_Class90020] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)\n(not (symptom engine low-output | not-low-output))\n(not (repair ?))")
+	(rhs "(assert (q (gensym)))\n(user-confirm \"engine low output\" \"Is the output of the engine low (yes/no)? \")")
+	(title "determine-low-output1"))
+
+([MABCAM_Class90021] of  Rule
+
+	(auto-focus TRUE)
+	(lhs "(engine low output yes)\n?q <- (q ?)")
+	(rhs "(assert (symptom engine low-output))\n(retract ?q)")
+	(title "determine-low-output2"))
+
+([MABCAM_Class90022] of  Rule
+
+	(lhs "(engine low output no)\n?q <- (q ?)")
+	(rhs "(assert (symptom engine not-low-output))\n(retract ?q)")
+	(title "determine-low-output3"))
+
+([MABCAM_Class90023] of  Rule
+
+	(lhs "(working-state engine does-not-start)\n(rotation-state engine rotates)\n(not (repair ?))")
+	(rhs "(assert (q (gensym)))\n (user-confirm \"engine has gas in tank\" \"Does the tank have any gas in it (yes/no)? \")")
+	(title "determine-gas-level1"))
+
+([MABCAM_Class90024] of  Rule
+
+	(lhs "(engine has gas in tank)\n?q <- (q ?)")
+	(rhs "(assert (repair \"Add gas.\"))\n(retract ?q)")
+	(title "determine-gas-level2"))
+
+([MABCAM_Class90025] of  Rule
+
+	(lhs "(rotation-state engine does-not-rotate)\n(not (charge-state battery ?))\n(not (repair ?))")
+	(rhs "(assert (q (gensym)))\n(user-confirm \"engine has battery charged\" \"Is the battery charged (yes/no)? \")")
+	(title "determine-battery-state1"))
+
+([MABCAM_Class90026] of  Rule
+
+	(lhs "(engine has battery charged yes)\n?q <- (q ?)")
+	(rhs "(assert (charge-state battery charged))\n(retract ?q)")
+	(title "determine-battery-state2"))
+
+([MABCAM_Class90027] of  Rule
+
+	(lhs "(engine has battery charged no)\n?q <- (q ?)")
+	(rhs "(assert (repair \"Charge the battery.\"))\n(assert (charge-state battery dead))\n(retract ?q)")
+	(title "determine-battery-state3"))
+
+([MABCAM_Class90028] of  Rule
+
+	(lhs "(or (and (working-state engine does-not-start)      \n              (spark-state engine irregular-spark))\n      (symptom engine low-output))")
+	(rhs "(assert (q (gensym)))\n(user-select \"engine has points\" \"What is the surface state of the points?\"\n                    normal burned contaminated)")
+	(title "determine-point-surface-state1"))
+
+([MABCAM_Class90029] of  Rule
+
+	(lhs "(engine has points burned)\n?q <- (q ?)")
+	(rhs "(assert (repair \"Replace the points.\"))\n(retract ?q)")
+	(title "determine-point-surface-state2"))
+
+([MABCAM_Class90030] of  Rule
+
+	(lhs "(engine has points contaminated)\n?q <- (q ?)")
+	(rhs "(assert (repair \"Clean the points.\"))\n(retract ?q)")
+	(title "determine-point-surface-state3"))
+
+([MABCAM_Class90031] of  Rule
+
+	(lhs "(working-state engine does-not-start)      \n(spark-state engine does-not-spark)\n(charge-state battery charged)\n(not (repair ?))")
+	(rhs "(assert (q (gensym)))\n (user-confirm \"engine conductivity test positive\" \"Is the conductivity test for the ignition coil positive (yes/no)? \")")
+	(title "determine-conductivity-test1"))
+
+([MABCAM_Class90032] of  Rule
+
+	(lhs "(engine conductivity test positive yes)\n?q <- (q ?)")
+	(rhs "(assert (repair \"Repair the distributor lead wire.\"))\n(retract ?q)")
+	(title "determine-conductivity-test2"))
+
+([MABCAM_Class90033] of  Rule
+
+	(lhs "(engine conductivity test positive no)\n?q <- (q ?)")
+	(rhs "(assert (repair \"Replace the ignition coil.\"))\n(retract ?q)")
+	(title "determine-conductivity-test3"))
+
+([MABCAM_Class90034] of  Rule
+
+	(lhs "(not (q ?))\n(not (repair ?))")
+	(rhs "(facts)\n(assert (repair \"Take your car to a mechanic.\"))")
+	(salience -10)
+	(title "no-repairs"))
+
+([MABCAM_Class90035] of  Comment
+
+	(source ";;;****************************\n;;;* REPAIR RULES *\n;;;****************************")
+	(title "REPAIR RULES"))
+
+([MABCAM_Class90036] of  Rule
+
+	(lhs "(repair ?item)")
+	(rhs "(user-message \"Automotive Expert System\" (str-cat \"Suggested Repair: \" ?item))")
+	(salience 10)
+	(title "print-repair"))
+
+([MABCAM_Class90038] of  CloFuncall
+
+	(source "(in-ns 'clo.clipsjni)"))
+
+([MABCAM_Class90045] of  Message
+
+	(text "Suggested Repair: Take your car to a mechanic.")
+	(title "Automotive Expert System"))

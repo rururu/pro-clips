@@ -1,0 +1,36 @@
+; Fri Apr 05 19:02:17 MSK 2024
+; 
+;+ (version "3.5")
+;+ (build "Build 663")
+
+
+(defclass %3ACLIPS_TOP_LEVEL_SLOT_CLASS "Fake class to save top-level slot information"
+	(is-a USER)
+	(role abstract)
+	(multislot but-del-fil
+;+		(type ANY)
+		(create-accessor read-write))
+	(multislot scenario
+;+		(type ANY)
+		(create-accessor read-write))
+	(multislot but-deep-copy
+;+		(type ANY)
+		(create-accessor read-write))
+	(multislot but-shal-copy
+;+		(type ANY)
+		(create-accessor read-write))
+	(multislot source-project
+;+		(type ANY)
+		(create-accessor read-write))
+	(multislot but-check-scen-vars
+;+		(type ANY)
+		(create-accessor read-write))
+	(multislot but-find-unref
+;+		(type ANY)
+		(create-accessor read-write))
+	(multislot but-del-unref
+;+		(type ANY)
+		(create-accessor read-write))
+	(multislot but-load-prj
+;+		(type ANY)
+		(create-accessor read-write)))

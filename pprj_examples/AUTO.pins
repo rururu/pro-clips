@@ -1,0 +1,407 @@
+; Fri Apr 05 19:02:17 MSK 2024
+; 
+;+ (version "3.5")
+;+ (build "Build 663")
+
+([AUTO_Class0] of  WorkingPrograms
+
+	(butt-load-progs "Load Programs/protege.core/ldns")
+	(cloPrograms
+		[ProClojure_Class20012]
+		[CLIPSProInterface_Class6]
+		[CLIPSProCommunicator_Class0])
+	(title "Auto Working Programs"))
+
+([AUTO_Class1] of  %3AINSTANCE-ANNOTATION
+
+	(%3AANNOTATED-INSTANCE [AUTO_Class0])
+	(%3ACREATION-TIMESTAMP "2024.04.01 10:48:09.145 MSK")
+	(%3ACREATOR "ru"))
+
+([AUTO_Class10001] of  ClpFile
+
+	(constructs
+		[AUTO_Class10002]
+		[AUTO_Class60004]
+		[AUTO_Class60005]
+		[AUTO_Class10003]
+		[AUTO_Class10004]
+		[AUTO_Class10005]
+		[AUTO_Class10006]
+		[AUTO_Class10007]
+		[AUTO_Class10008]
+		[AUTO_Class10009]
+		[AUTO_Class10010]
+		[AUTO_Class10011]
+		[AUTO_Class10012]
+		[AUTO_Class10013]
+		[AUTO_Class10014]
+		[AUTO_Class10015]
+		[AUTO_Class10016]
+		[AUTO_Class10017]
+		[AUTO_Class10018]
+		[AUTO_Class10019]
+		[AUTO_Class10020]
+		[AUTO_Class10021]
+		[AUTO_Class10022]
+		[AUTO_Class10023]
+		[AUTO_Class10024]
+		[AUTO_Class10025]
+		[AUTO_Class10030]
+		[AUTO_Class10026]
+		[AUTO_Class10027]
+		[AUTO_Class10028]
+		[AUTO_Class10029]
+		[AUTO_Class10031]
+		[AUTO_Class10032]
+		[AUTO_Class10033]
+		[AUTO_Class10034]
+		[AUTO_Class10035]
+		[AUTO_Class10036]
+		[AUTO_Class10037])
+	(path "clp/auto24.clp")
+	(title "Automotive Expert System"))
+
+([AUTO_Class10002] of  Comment
+
+	(source ";;;======================================================\n;;;   Automotive Expert System\n;;;\n;;;     This expert system diagnoses some simple\n;;;     problems with a car.\n;;;\n;;;     CLIPS Version 6.0 Example\n;;;\n;;;     To execute, merely load, reset and run.\n;;;======================================================")
+	(title "Automotive Expert System"))
+
+([AUTO_Class10003] of  Comment
+
+	(source ";;;**********************\n;;;* ENGINE STATE RULES *\n;;;**********************")
+	(title "ENGINE STATE RULES"))
+
+([AUTO_Class10004] of  Rule
+
+	(lhs "(working-state engine normal)")
+	(rhs "(assert (repair \"No repair needed.\"))\n(assert (spark-state engine normal))\n(assert (charge-state battery charged))\n(assert (rotation-state engine rotates))")
+	(salience 10)
+	(title "normal-engine-state-conclusions"))
+
+([AUTO_Class10005] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)")
+	(rhs "(assert (charge-state battery charged))\n(assert (rotation-state engine rotates))")
+	(salience 10)
+	(title "unsatisfactory-engine-state-conclusions"))
+
+([AUTO_Class10006] of  Comment
+
+	(source ";;;***************\n;;;* QUERY RULES *\n;;;***************")
+	(title "QUERY RULES"))
+
+([AUTO_Class10007] of  Rule
+
+	(lhs "(not (working-state engine ?))\n(not (repair ?))")
+	(rhs "(user-confirm \"engine start\" \"Does the engine start (yes/no)? \")")
+	(title "determine-engine-state1"))
+
+([AUTO_Class10008] of  Rule
+
+	(lhs "(engine start yes)")
+	(rhs "(user-confirm \"engine run normally\" \"Does the engine run normally (yes/no)? \")")
+	(title "determine-engine-state2"))
+
+([AUTO_Class10009] of  Rule
+
+	(lhs "?a <- (engine run normally yes)")
+	(rhs "(assert (working-state engine normal))\n(retract ?a)")
+	(title "determine-engine-state3"))
+
+([AUTO_Class10010] of  Rule
+
+	(lhs "?a <- (engine run normally no)")
+	(rhs "(assert (working-state engine unsatisfactory))\n(retract ?a)")
+	(title "determine-engine-state4"))
+
+([AUTO_Class10011] of  Rule
+
+	(lhs "?a <- (engine start no)")
+	(rhs "(assert (working-state engine does-not-start))\n(retract ?a)")
+	(title "determine-engine-state5"))
+
+([AUTO_Class10012] of  Rule
+
+	(lhs "(working-state engine does-not-start)\n(not (rotation-state engine ?))\n(not (repair ?))")
+	(rhs "(user-confirm \"engine rotate\" \"Does the engine rotate (yes/no)? \")")
+	(title "determine-rotation-state1"))
+
+([AUTO_Class10013] of  Rule
+
+	(lhs "?a <- (engine rotate yes)")
+	(rhs "(assert (rotation-state engine rotates))\n(assert (spark-state engine irregular-spark))\n(retract ?a)")
+	(title "determine-rotation-state2"))
+
+([AUTO_Class10014] of  Rule
+
+	(lhs "?a <- (engine rotate no)")
+	(rhs "(assert (rotation-state engine does-not-rotate))       \n(assert (spark-state engine does-not-spark))\n(retract ?a)")
+	(title "determine-rotation-state3"))
+
+([AUTO_Class10015] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)\n(not (repair ?))")
+	(rhs "(user-confirm \"engine sluggish\" \"Is the engine sluggish (yes/no)? \")")
+	(title "determine-sluggishness1"))
+
+([AUTO_Class10016] of  Rule
+
+	(lhs "?a <- (engine sluggish yes)")
+	(rhs "(assert (repair \"Clean the fuel line.\"))\n(retract ?a)")
+	(title "determine-sluggishness2"))
+
+([AUTO_Class10017] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)\n(not (repair ?))")
+	(rhs "(user-confirm \"engine misfire\" \"Does the engine misfire (yes/no)? \")")
+	(title "determine-misfiring1"))
+
+([AUTO_Class10018] of  Rule
+
+	(lhs "?a <- (engine misfire yes)")
+	(rhs "(assert (repair \"Point gap adjustment.\"))       \n(assert (spark-state engine irregular-spark))\n(retract ?a)")
+	(title "determine-misfiring2"))
+
+([AUTO_Class10019] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)\n(not (repair ?))")
+	(rhs "(user-confirm \"engine knock\" \"Does the engine knock (yes/no)? \")")
+	(title "determine-knocking1"))
+
+([AUTO_Class10020] of  Rule
+
+	(lhs "?a <- (engine knock yes)")
+	(rhs "(assert (repair \"Timing adjustment.\"))\n(retract ?a)")
+	(title "determine-knocking2"))
+
+([AUTO_Class10021] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)\n(not (symptom engine low-output | not-low-output))\n(not (repair ?))")
+	(rhs "(user-confirm \"engine low output\" \"Is the output of the engine low (yes/no)? \")")
+	(title "determine-low-output1"))
+
+([AUTO_Class10022] of  Rule
+
+	(auto-focus TRUE)
+	(lhs "?a <- (engine low output yes)")
+	(rhs "(assert (symptom engine low-output))\n(retract ?a)")
+	(title "determine-low-output2"))
+
+([AUTO_Class10023] of  Rule
+
+	(lhs "?a <- (engine low output no)")
+	(rhs "(assert (symptom engine not-low-output))\n(retract ?a)")
+	(title "determine-low-output3"))
+
+([AUTO_Class10024] of  Rule
+
+	(lhs "(working-state engine does-not-start)\n(rotation-state engine rotates)\n(not (repair ?))")
+	(rhs "(user-confirm \"engine has gas in tank\" \"Does the tank have any gas in it (yes/no)? \")")
+	(title "determine-gas-level1"))
+
+([AUTO_Class10025] of  Rule
+
+	(lhs "?a <- (engine has gas in tank)")
+	(rhs "(assert (repair \"Add gas.\"))\n(retract ?a)")
+	(title "determine-gas-level2"))
+
+([AUTO_Class10026] of  Rule
+
+	(lhs "(rotation-state engine does-not-rotate)\n(not (charge-state battery ?))\n(not (repair ?))")
+	(rhs "(user-confirm \"engine has battery charged\" \"Is the battery charged (yes/no)? \")")
+	(title "determine-battery-state1"))
+
+([AUTO_Class10027] of  Rule
+
+	(lhs "?a <- (engine has battery charged yes)")
+	(rhs "(assert (charge-state battery charged))\n(retract ?a)")
+	(title "determine-battery-state2"))
+
+([AUTO_Class10028] of  Rule
+
+	(lhs "?a <- (engine has battery charged no)")
+	(rhs "(assert (repair \"Charge the battery.\"))\n(assert (charge-state battery dead))\n(retract ?a)")
+	(title "determine-battery-state3"))
+
+([AUTO_Class10029] of  Rule
+
+	(lhs "(or (and (working-state engine does-not-start)      \n              (spark-state engine irregular-spark))\n      (symptom engine low-output))")
+	(rhs "(user-select \"engine has points\" \"What is the surface state of the points?\"\n                    normal burned contaminated)")
+	(title "determine-point-surface-state1"))
+
+([AUTO_Class10030] of  Rule
+
+	(lhs "?a <- (engine has points burned)")
+	(rhs "(assert (repair \"Replace the points.\"))\n(retract ?a)")
+	(title "determine-point-surface-state2"))
+
+([AUTO_Class10031] of  Rule
+
+	(lhs "?a <- (engine has points contaminated)")
+	(rhs "(assert (repair \"Clean the points.\"))\n(retract ?a)")
+	(title "determine-point-surface-state3"))
+
+([AUTO_Class10032] of  Rule
+
+	(lhs "(working-state engine does-not-start)      \n(spark-state engine does-not-spark)\n(charge-state battery charged)\n(not (repair ?))")
+	(rhs "(user-confirm \"engine conductivity test positive\" \"Is the conductivity test for the ignition coil positive (yes/no)? \")")
+	(title "determine-conductivity-test1"))
+
+([AUTO_Class10033] of  Rule
+
+	(lhs "?a <- (engine conductivity test positive yes)")
+	(rhs "(assert (repair \"Repair the distributor lead wire.\"))\n(retract ?a)")
+	(title "determine-conductivity-test2"))
+
+([AUTO_Class10034] of  Rule
+
+	(lhs "?a <- (engine conductivity test positive no)")
+	(rhs "(assert (repair \"Replace the ignition coil.\"))\n(retract ?a)")
+	(title "determine-conductivity-test3"))
+
+([AUTO_Class10035] of  Rule
+
+	(auto-focus TRUE)
+	(lhs "(or (and (engine has gas in tank yes)\n             (engine has points normal))\n      (and (engine knock no)\n             (engine misfire no)\n             (engine sluggish no)\n             (symptom engine not-low-output)))")
+	(rhs "(assert (repair \"Take your car to a mechanic.\"))")
+	(title "to-mechanic"))
+
+([AUTO_Class10036] of  Comment
+
+	(source ";;;****************************\n;;;* REPAIR RULES *\n;;;****************************")
+	(title "REPAIR RULES"))
+
+([AUTO_Class10037] of  Rule
+
+	(lhs "(repair ?item)")
+	(rhs "(user-log \"Automotive Expert System\" \n  (str-cat (log-time) \" Suggested Repair: \" ?item))")
+	(salience 10)
+	(title "print-repair"))
+
+([AUTO_Class2] of  CloProgram
+
+	(cloFunctions [Clojure_Class300000])
+	(cloNamespace [Clojure_Class300001])
+	(title "CW"))
+
+([AUTO_Class20000] of  Questionnaire
+
+	(questions
+		[AUTO_Class30003]
+		[AUTO_Class30004]
+		[AUTO_Class30005]
+		[AUTO_Class30006])
+	(title "Engine State Unsatisfactory"))
+
+([AUTO_Class20018] of  Message
+
+	(text "Suggested Repair: Clean the fuel line.")
+	(title "Automotive Expert System"))
+
+([AUTO_Class3] of  CloFuncall
+
+	(source "(in-ns 'clo.clipsjni)"))
+
+([AUTO_Class30000] of  CloFuncall
+
+	(source "(do (clear) (load-constructs \"clp/auto44.clp\") (reset) (run))"))
+
+([AUTO_Class30001] of  ClpFile
+
+	(constructs
+		[AUTO_Class10002]
+		[AUTO_Class60004]
+		[AUTO_Class60005]
+		[AUTO_Class10003]
+		[AUTO_Class10004]
+		[AUTO_Class10005]
+		[AUTO_Class10006]
+		[AUTO_Class10007]
+		[AUTO_Class10008]
+		[AUTO_Class10009]
+		[AUTO_Class10010]
+		[AUTO_Class10011]
+		[AUTO_Class10012]
+		[AUTO_Class10013]
+		[AUTO_Class10014]
+		[AUTO_Class30002]
+		[AUTO_Class10022]
+		[AUTO_Class10020]
+		[AUTO_Class10023]
+		[AUTO_Class10018]
+		[AUTO_Class10016]
+		[AUTO_Class10024]
+		[AUTO_Class10025]
+		[AUTO_Class10030]
+		[AUTO_Class10026]
+		[AUTO_Class10027]
+		[AUTO_Class10028]
+		[AUTO_Class10029]
+		[AUTO_Class10032]
+		[AUTO_Class10033]
+		[AUTO_Class10034]
+		[AUTO_Class10031]
+		[AUTO_Class10035]
+		[AUTO_Class10036]
+		[AUTO_Class10037])
+	(path "clp/auto44.clp")
+	(title "Automotive Expert System Quest"))
+
+([AUTO_Class30002] of  Rule
+
+	(lhs "(working-state engine unsatisfactory)\n(not (repair ?))")
+	(rhs "(user-questionnaire \"Engine State Unsatisfactory\")")
+	(title "engine-state-unsatisfactory"))
+
+([AUTO_Class30003] of  Question
+
+	(fact "(engine sluggish ?)")
+	(flag FALSE)
+	(title "Is the engine sluggish (yes/no)?"))
+
+([AUTO_Class30004] of  Question
+
+	(fact "(engine misfire ?)")
+	(flag FALSE)
+	(title "Does the engine misfire (yes/no)?"))
+
+([AUTO_Class30005] of  Question
+
+	(fact "(engine knock ?)")
+	(flag FALSE)
+	(title "Does the engine knock (yes/no)?"))
+
+([AUTO_Class30006] of  Question
+
+	(fact "(engine low output ?)")
+	(flag FALSE)
+	(title "Is the output of the engine low (yes/no)?"))
+
+([AUTO_Class40000] of  Loader
+
+	(cloPrograms
+		[ProClojure_Class20012]
+		[CLIPSProInterface_Class6]
+		[CLIPSProCommunicator_Class0])
+	(title "Loader AUTO"))
+
+([AUTO_Class50003] of  Log
+
+	(text "2024/4/5 19:0:54 Suggested Repair: Clean the points.\n2024/4/5 19:1:4 Suggested Repair: Timing adjustment.\n2024/4/5 19:1:8 Suggested Repair: Point gap adjustment.")
+	(title "Automotive Expert System"))
+
+([AUTO_Class60004] of  Comment
+
+	(source ";;;***********************\n;;;* LOG-TIME FUNCTION *\n;;;***********************")
+	(title "LOG-TIME FUNCTION"))
+
+([AUTO_Class60005] of  Function
+
+	(arguments "()")
+	(source "(bind ?d (local-time))\n(format nil \"%d/%d/%d %d:%d:%d\"\n  (nth$ 1 ?d) (nth$ 2 ?d) (nth$ 3 ?d)\n  (nth$ 4 ?d) (nth$ 5 ?d) (nth$ 6 ?d))")
+	(title "log-time"))
+
+([AUTO_Class70013] of  CloFuncall
+
+	(source "(do (clear) (load-constructs \"clp/auto24.clp\") (reset) (run))"))
