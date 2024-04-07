@@ -1,4 +1,4 @@
-; Fri Apr 05 19:02:17 MSK 2024
+; Sun Apr 07 21:13:00 MSK 2024
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -17,6 +17,10 @@
 	(%3AANNOTATED-INSTANCE [AUTO_Class0])
 	(%3ACREATION-TIMESTAMP "2024.04.01 10:48:09.145 MSK")
 	(%3ACREATOR "ru"))
+
+([AUTO_Class10000] of  CloFuncall
+
+	(source "(do (clear) (load-constructs \"clp/auto.clp\") (reset) (run))"))
 
 ([AUTO_Class10001] of  ClpFile
 
@@ -363,7 +367,7 @@
 ([AUTO_Class30004] of  Question
 
 	(fact "(engine misfire ?)")
-	(flag FALSE)
+	(flag TRUE)
 	(title "Does the engine misfire (yes/no)?"))
 
 ([AUTO_Class30005] of  Question
@@ -375,7 +379,7 @@
 ([AUTO_Class30006] of  Question
 
 	(fact "(engine low output ?)")
-	(flag FALSE)
+	(flag TRUE)
 	(title "Is the output of the engine low (yes/no)?"))
 
 ([AUTO_Class40000] of  Loader
@@ -386,9 +390,8 @@
 		[CLIPSProCommunicator_Class0])
 	(title "Loader AUTO"))
 
-([AUTO_Class50003] of  Log
+([AUTO_Class50006] of  Log
 
-	(text "2024/4/5 19:0:54 Suggested Repair: Clean the points.\n2024/4/5 19:1:4 Suggested Repair: Timing adjustment.\n2024/4/5 19:1:8 Suggested Repair: Point gap adjustment.")
 	(title "Automotive Expert System"))
 
 ([AUTO_Class60004] of  Comment

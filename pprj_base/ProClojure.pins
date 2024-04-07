@@ -1,4 +1,4 @@
-; Fri Apr 05 19:02:45 MSK 2024
+; Sun Apr 07 18:48:10 MSK 2024
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -375,7 +375,7 @@
 
 ([Clojure_Class9] of  CloNamespace
 
-	(source "(:use clojure.stacktrace)\n(:import\n java.io.File\n java.io.FileWriter\n edu.stanford.smi.protege.ui.ProjectManager\n edu.stanford.smi.protege.model.ValueType\n edu.stanford.smi.protege.model.Instance\n clojuretab.ClojureTab\n clojuretab.ProgramGenerator)")
+	(source "(:use clojure.stacktrace)\n(:import\n java.io.File\n java.io.FileWriter\n edu.stanford.smi.protege.ui.ProjectManager\n edu.stanford.smi.protege.model.ValueType\n edu.stanford.smi.protege.model.Instance\n edu.stanford.smi.protege.model.WidgetDescriptor\n clojuretab.ClojureTab\n clojuretab.ProgramGenerator)")
 	(title "protege.core"))
 
 ([Clojure_Class90000] of  CloFunction

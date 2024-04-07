@@ -6,6 +6,7 @@
  edu.stanford.smi.protege.ui.ProjectManager
  edu.stanford.smi.protege.model.ValueType
  edu.stanford.smi.protege.model.Instance
+ edu.stanford.smi.protege.model.WidgetDescriptor
  clojuretab.ClojureTab
  clojuretab.ProgramGenerator))
 (def ^:dynamic *prj* (.getCurrentProject (ProjectManager/getProjectManager)))

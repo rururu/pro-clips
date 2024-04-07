@@ -1,0 +1,12 @@
+; Sun Apr 07 20:01:31 MSK 2024
+; 
+;+ (version "3.5")
+;+ (build "Build 663")
+
+([Template_Class0] of  Loader
+
+	(cloPrograms
+		[ProClojure_Class20012]
+		[CLIPSProInterface_Class6]
+		[CLIPSProCommunicator_Class0])
+	(title "Loader1"))

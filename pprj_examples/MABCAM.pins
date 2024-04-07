@@ -1,4 +1,4 @@
-; Fri Apr 05 19:20:49 MSK 2024
+; Sun Apr 07 20:50:21 MSK 2024
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -343,29 +343,18 @@
 	(result-variable "RESULT")
 	(title "Evaluator1"))
 
-([MABCAM_Class100002] of  Message
+([MABCAM_Class100000] of  CloFuncall
 
-	(text "Hello Ru!")
-	(title "Hello"))
+	(source "(do (clear) (load-constructs \"clp/mab.clp\") (reset) (run))"))
 
-([MABCAM_Class100003] of  ClpFile
-
-	(constructs
-		[MABCAM_Class100004]
-		[MABCAM_Class100005])
-	(path "clp/Hello.clp")
-	(title "Hello"))
-
-([MABCAM_Class100004] of  Rule
+([MABCAM_Class100001] of  Rule
 
 	(rhs "(user-input \"My name is\" \"What is your name?\")")
 	(title "Ask-name"))
 
-([MABCAM_Class100005] of  Rule
+([MABCAM_Class100002] of  Message
 
-	(lhs "(My name is ?name)")
-	(rhs "(user-message \"Hello\" (format nil \"Hello %s!\" ?name))")
-	(salience 0)
+	(text "Hello Ru!")
 	(title "Hello"))
 
 ([MABCAM_Class10001] of  Funcall
@@ -414,13 +403,30 @@
 
 ([MABCAM_Class110002] of  Log
 
-	(text "Monkey jumps off the green-couch onto the floor.\nMonkey walks to t2-2.\nMonkey climbs onto the red-couch.\nMonkey climbs onto the big-pillow.\nMonkey grabs the red-chest.\nMonkey throws the red-chest off the big-pillow onto the floor.\nMonkey jumps off the big-pillow onto the floor.\nMonkey walks to t1-3.\nMonkey grabs the red-key.\nMonkey walks to t2-2 holding the red-key.\nMonkey opens the red-chest with the red-key revealing the ladder.\nMonkey drops the red-key.\nMonkey climbs onto the red-chest.\nMonkey grabs the ladder.\nMonkey jumps off the red-chest onto the floor.\nMonkey walks to t7-7 holding the ladder.\nMonkey drops the ladder.\nMonkey climbs onto the ladder.\nMonkey grabs the blue-chest.\nMonkey throws the blue-chest off the ladder onto the floor.\nMonkey jumps off the ladder onto the floor.\nMonkey grabs the ladder.\nMonkey walks to t8-8 holding the ladder.\nMonkey drops the ladder.\nMonkey climbs onto the ladder.\nMonkey grabs the green-chest.\nMonkey throws the green-chest off the ladder onto the floor.\nMonkey jumps off the ladder onto the floor.\nMonkey walks to t2-2.\nMonkey grabs the red-key.\nMonkey walks to t8-8 holding the red-key.\nMonkey opens the green-chest with the red-key revealing the blue-key.\nMonkey drops the red-key.\nMonkey climbs onto the green-chest.\nMonkey grabs the blue-key.\nMonkey jumps off the green-chest onto the floor.\nMonkey walks to t7-7 holding the blue-key.\nMonkey opens the blue-chest with the blue-key revealing the bananas.\nMonkey drops the blue-key.\nMonkey climbs onto the blue-chest.\nMonkey grabs the bananas.\nMonkey eats the bananas.\nMove 1 missionary and 1 cannibal to shore-2.\n\nMove 1 missionary to shore-1.\n\nMove 2 cannibals to shore-2.\n\nMove 1 cannibal to shore-1.\n\nMove 2 missionaries to shore-2.\n\nMove 1 missionary and 1 cannibal to shore-1.\n\nMove 2 missionaries to shore-2.\n\nMove 1 cannibal to shore-1.\n\nMove 2 cannibals to shore-2.\n\nMove 1 missionary to shore-1.\n\nMove 1 missionary and 1 cannibal to shore-2.\n\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\nMonkey jumps off the green-couch onto the floor.\nMonkey walks to t2-2.\nMonkey climbs onto the red-couch.\nMonkey climbs onto the big-pillow.\nMonkey grabs the red-chest.\nMonkey throws the red-chest off the big-pillow onto the floor.\nMonkey jumps off the big-pillow onto the floor.\nMonkey walks to t1-3.\nMonkey grabs the red-key.\nMonkey walks to t2-2 holding the red-key.\nMonkey opens the red-chest with the red-key revealing the ladder.\nMonkey drops the red-key.\nMonkey climbs onto the red-chest.\nMonkey grabs the ladder.\nMonkey jumps off the red-chest onto the floor.\nMonkey walks to t7-7 holding the ladder.\nMonkey drops the ladder.\nMonkey climbs onto the ladder.\nMonkey grabs the blue-chest.\nMonkey throws the blue-chest off the ladder onto the floor.\nMonkey jumps off the ladder onto the floor.\nMonkey grabs the ladder.\nMonkey walks to t8-8 holding the ladder.\nMonkey drops the ladder.\nMonkey climbs onto the ladder.\nMonkey grabs the green-chest.\nMonkey throws the green-chest off the ladder onto the floor.\nMonkey jumps off the ladder onto the floor.\nMonkey walks to t2-2.\nMonkey grabs the red-key.\nMonkey walks to t8-8 holding the red-key.\nMonkey opens the green-chest with the red-key revealing the blue-key.\nMonkey drops the red-key.\nMonkey climbs onto the green-chest.\nMonkey grabs the blue-key.\nMonkey jumps off the green-chest onto the floor.\nMonkey walks to t7-7 holding the blue-key.\nMonkey opens the blue-chest with the blue-key revealing the bananas.\nMonkey drops the blue-key.\nMonkey climbs onto the blue-chest.\nMonkey grabs the bananas.\nMonkey eats the bananas.")
 	(title "MAB"))
 
 ([MABCAM_Class110005] of  Log
 
 	(text "Move 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 2 cannibals to shore-1.\nMove 1 cannibal to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 2 cannibals to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 2 missionaries to shore-1.\nMove 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 2 missionaries to shore-1.\nMove 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 cannibal to shore-1.\nMove 2 cannibals to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 2 missionaries to shore-1.\nMove 1 cannibal to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nSolution found:\n\n\nMove 1 cannibal to shore-2.")
 	(title "CAM"))
+
+([MABCAM_Class120002] of  Rule
+
+	(lhs "(My name is ?name)")
+	(rhs "(user-message \"Hello\" (format nil \"Hello %s!\" ?name))")
+	(title "Hello"))
+
+([MABCAM_Class120003] of  CloFuncall
+
+	(source "(load-constructs \"clp/Hello.clp\")"))
+
+([MABCAM_Class120004] of  CloFuncall
+
+	(source "(reset)"))
+
+([MABCAM_Class120005] of  CloFuncall
+
+	(source "(run)"))
 
 ([MABCAM_Class20000] of  ClpFile
 
@@ -893,6 +899,14 @@
 
 	(N 4)
 	(value "\"clo/mab.clp\""))
+
+([MABCAM_Class90000] of  ClpFile
+
+	(constructs
+		[MABCAM_Class100001]
+		[MABCAM_Class120002])
+	(path "clp/Hello.clp")
+	(title "Hello"))
 
 ([MABCAM_Class90001] of  Comment
 
