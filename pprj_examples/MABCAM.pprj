@@ -1,4 +1,4 @@
-; Sun Apr 07 20:50:21 MSK 2024
+; Mon Apr 08 10:23:41 MSK 2024
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -20,7 +20,7 @@
 
 ([BROWSER_SLOT_NAMES] of  Property_List
 
-	(properties [MABCAM_ProjectKB_Class757]))
+	(properties [MABCAM_ProjectKB_Class761]))
 
 ([CAM_ProjectKB_Class35] of  String
 
@@ -254,34 +254,6 @@
 
 ([KB_227115_Class450] of  Property_List
 )
-
-([KB_588385_Class753] of  Map
-
-	(entries
-		[KB_588385_Class754]
-		[KB_588385_Class755]
-		[KB_588385_Class756]))
-
-([KB_588385_Class754] of  Map_Entry
-
-	(key "suppress_instance_counting")
-	(key_class "java.lang.String")
-	(value "false")
-	(value_class "java.lang.String"))
-
-([KB_588385_Class755] of  Map_Entry
-
-	(key "add_name_on_instance_form")
-	(key_class "java.lang.String")
-	(value "false")
-	(value_class "java.lang.String"))
-
-([KB_588385_Class756] of  Map_Entry
-
-	(key "change_tracking_active")
-	(key_class "java.lang.String")
-	(value "false")
-	(value_class "java.lang.String"))
 
 ([KB_646572_Class671] of  Widget
 
@@ -2648,8 +2620,8 @@
 
 ([KB_807933_Class1] of  Map
 
-	(entries [MABCAM_ProjectKB_Class760])
-	(referenced_maps [MABCAM_ProjectKB_Class758]))
+	(entries [MABCAM_ProjectKB_Class764])
+	(referenced_maps [MABCAM_ProjectKB_Class762]))
 
 ([KB_807933_Class11] of  Property_List
 
@@ -2743,6 +2715,34 @@
 	(name "instances_file_name")
 	(string_value "MABCAM.pins"))
 
+([KB_879281_Class753] of  Map
+
+	(entries
+		[KB_879281_Class754]
+		[KB_879281_Class755]
+		[KB_879281_Class756]))
+
+([KB_879281_Class754] of  Map_Entry
+
+	(key "suppress_instance_counting")
+	(key_class "java.lang.String")
+	(value "false")
+	(value_class "java.lang.String"))
+
+([KB_879281_Class755] of  Map_Entry
+
+	(key "add_name_on_instance_form")
+	(key_class "java.lang.String")
+	(value "false")
+	(value_class "java.lang.String"))
+
+([KB_879281_Class756] of  Map_Entry
+
+	(key "change_tracking_active")
+	(key_class "java.lang.String")
+	(value "false")
+	(value_class "java.lang.String"))
+
 ([LAYOUT_PROPERTIES] of  Property_List
 
 	(name "layout properties")
@@ -2755,27 +2755,27 @@
 ([MABCAM_ProjectKB_Class668] of  Property_List
 )
 
-([MABCAM_ProjectKB_Class757] of  String
+([MABCAM_ProjectKB_Class761] of  String
 
 	(name "Evaluator")
 	(string_value "title"))
 
-([MABCAM_ProjectKB_Class758] of  Map
+([MABCAM_ProjectKB_Class762] of  Map
 
-	(entries [MABCAM_ProjectKB_Class759]))
+	(entries [MABCAM_ProjectKB_Class763]))
 
-([MABCAM_ProjectKB_Class759] of  Map_Entry
+([MABCAM_ProjectKB_Class763] of  Map_Entry
 
 	(key "MABCAM_Class40003")
 	(key_class "edu.stanford.smi.protege.model.Frame")
 	(value "4 408 212 124")
 	(value_class "java.awt.Rectangle"))
 
-([MABCAM_ProjectKB_Class760] of  Map_Entry
+([MABCAM_ProjectKB_Class764] of  Map_Entry
 
 	(key "InstanceDisplay.yellow_stickies")
 	(key_class "java.lang.String")
-	(value "MABCAM_ProjectKB_Class758")
+	(value "MABCAM_ProjectKB_Class762")
 	(value_class "java.util.Map"))
 
 ([option_instance] of  Options

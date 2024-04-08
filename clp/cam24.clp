@@ -67,27 +67,27 @@
   (switch ?missionaries
      (case 0 then
         (if (eq ?cannibals 1) 
-            then (user-log "CAM" (format nil "Move 1 cannibal to %s." ?shore))
-            else (user-log "CAM" (format nil "Move %d cannibals to %s." ?cannibals ?shore))))
+            then (format nil "Move 1 cannibal to %s." ?shore)
+            else (format nil "Move %d cannibals to %s." ?cannibals ?shore)))
      (case 1 then
         (switch ?cannibals
            (case 0 then
-              (user-log "CAM" (format nil "Move 1 missionary to %s." ?shore)))
+              (format nil "Move 1 missionary to %s." ?shore))
            (case 1 then
-              (user-log "CAM" (format nil "Move 1 missionary and 1 cannibal to %s." ?shore)))
+              (format nil "Move 1 missionary and 1 cannibal to %s." ?shore))
            (default then
-              (user-log "CAM" (format nil "Move 1 missionary and %d cannibals to %s." 
-                          ?cannibals ?shore)))))
+              (format nil "Move 1 missionary and %d cannibals to %s." 
+                          ?cannibals ?shore))))
      (default
         (switch ?cannibals
            (case 0 then
-              (user-log "CAM" (format nil "Move %d missionaries to %s." ?missionaries ?shore)))
+              (format nil "Move %d missionaries to %s." ?missionaries ?shore))
            (case 1 then
-              (user-log "CAM" (format nil "Move %d missionaries and 1 cannibal to %s." 
-                          ?missionaries ?shore)))
+              (format nil "Move %d missionaries and 1 cannibal to %s." 
+                          ?missionaries ?shore))
            (default then
-              (user-log "CAM" (format nil "Move %d missionary and %d cannibals to %s." 
-                          ?missionaries ?cannibals ?shore)))))))
+              (format nil "Move %d missionary and %d cannibals to %s." 
+                          ?missionaries ?cannibals ?shore))))))
 
 ;;;***********************
 ;;;* GENERATE PATH RULES *
@@ -210,6 +210,6 @@
 (retract ?mv)
 (user-log "CAM" "Solution found:")
 (user-log "CAM" "")
-(progn$ (?move ?m) (user-log "MAB" (str-cat ?move)))
+(progn$ (?move ?m) (user-log "CAM" (str-cat ?move)))
 (user-log "CAM" ""))
 

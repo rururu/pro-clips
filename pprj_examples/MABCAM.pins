@@ -1,4 +1,4 @@
-; Sun Apr 07 20:50:21 MSK 2024
+; Mon Apr 08 10:23:41 MSK 2024
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -162,7 +162,7 @@
 ([CAM_Class33] of  Function
 
 	(arguments "(?missionaries ?cannibals ?shore)")
-	(source "(switch ?missionaries\n     (case 0 then\n        (if (eq ?cannibals 1) \n            then (user-log \"CAM\" (format nil \"Move 1 cannibal to %s.\" ?shore))\n            else (user-log \"CAM\" (format nil \"Move %d cannibals to %s.\" ?cannibals ?shore))))\n     (case 1 then\n        (switch ?cannibals\n           (case 0 then\n              (user-log \"CAM\" (format nil \"Move 1 missionary to %s.\" ?shore)))\n           (case 1 then\n              (user-log \"CAM\" (format nil \"Move 1 missionary and 1 cannibal to %s.\" ?shore)))\n           (default then\n              (user-log \"CAM\" (format nil \"Move 1 missionary and %d cannibals to %s.\" \n                          ?cannibals ?shore)))))\n     (default\n        (switch ?cannibals\n           (case 0 then\n              (user-log \"CAM\" (format nil \"Move %d missionaries to %s.\" ?missionaries ?shore)))\n           (case 1 then\n              (user-log \"CAM\" (format nil \"Move %d missionaries and 1 cannibal to %s.\" \n                          ?missionaries ?shore)))\n           (default then\n              (user-log \"CAM\" (format nil \"Move %d missionary and %d cannibals to %s.\" \n                          ?missionaries ?cannibals ?shore))))))")
+	(source "(switch ?missionaries\n     (case 0 then\n        (if (eq ?cannibals 1) \n            then (format nil \"Move 1 cannibal to %s.\" ?shore)\n            else (format nil \"Move %d cannibals to %s.\" ?cannibals ?shore)))\n     (case 1 then\n        (switch ?cannibals\n           (case 0 then\n              (format nil \"Move 1 missionary to %s.\" ?shore))\n           (case 1 then\n              (format nil \"Move 1 missionary and 1 cannibal to %s.\" ?shore))\n           (default then\n              (format nil \"Move 1 missionary and %d cannibals to %s.\" \n                          ?cannibals ?shore))))\n     (default\n        (switch ?cannibals\n           (case 0 then\n              (format nil \"Move %d missionaries to %s.\" ?missionaries ?shore))\n           (case 1 then\n              (format nil \"Move %d missionaries and 1 cannibal to %s.\" \n                          ?missionaries ?shore))\n           (default then\n              (format nil \"Move %d missionary and %d cannibals to %s.\" \n                          ?missionaries ?cannibals ?shore)))))")
 	(title "MAIN::move-string"))
 
 ([CAM_Class34] of  Comment
@@ -257,7 +257,7 @@
 ([CAM_Class48] of  Rule
 
 	(lhs "?mv <- (moves (id no-parent) (moves-list \"No move.\" $?m))")
-	(rhs "(retract ?mv)\n(user-log \"CAM\" \"Solution found:\")\n(user-log \"CAM\" \"\")\n(progn$ (?move ?m) (user-log \"MAB\" (str-cat ?move)))\n(user-log \"CAM\" \"\")")
+	(rhs "(retract ?mv)\n(user-log \"CAM\" \"Solution found:\")\n(user-log \"CAM\" \"\")\n(progn$ (?move ?m) (user-log \"CAM\" (str-cat ?move)))\n(user-log \"CAM\" \"\")")
 	(title "SOLUTION::print-solution"))
 
 ([CAM_Class5] of  ClpFile
@@ -401,13 +401,20 @@
 	(N 3)
 	(value "\"(user-confirm \\\"title\\\" \\\"mess\\\")\""))
 
+([MABCAM_Class110000] of  CloFuncall
+
+	(source "(do (clear) (load-constructs \"clp/cam.clp\") (reset) (run))"))
+
+([MABCAM_Class110001] of  CloFuncall
+
+	(source "(do (clear) (load-constructs \"clp/cam24.clp\") (reset) (run))"))
+
 ([MABCAM_Class110002] of  Log
 
 	(title "MAB"))
 
 ([MABCAM_Class110005] of  Log
 
-	(text "Move 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 2 cannibals to shore-1.\nMove 1 cannibal to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 2 cannibals to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 2 missionaries to shore-1.\nMove 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nMove 2 missionaries to shore-2.\nMove 1 cannibal to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 2 missionaries to shore-1.\nMove 1 cannibal to shore-2.\nMove 2 cannibals to shore-2.\nMove 1 cannibal to shore-1.\nMove 2 cannibals to shore-1.\nMove 1 missionary to shore-1.\nMove 1 missionary and 1 cannibal to shore-1.\nMove 2 missionaries to shore-1.\nMove 1 cannibal to shore-2.\nMove 1 missionary to shore-2.\nMove 1 missionary and 1 cannibal to shore-2.\nSolution found:\n\n\nMove 1 cannibal to shore-2.")
 	(title "CAM"))
 
 ([MABCAM_Class120002] of  Rule
@@ -415,18 +422,6 @@
 	(lhs "(My name is ?name)")
 	(rhs "(user-message \"Hello\" (format nil \"Hello %s!\" ?name))")
 	(title "Hello"))
-
-([MABCAM_Class120003] of  CloFuncall
-
-	(source "(load-constructs \"clp/Hello.clp\")"))
-
-([MABCAM_Class120004] of  CloFuncall
-
-	(source "(reset)"))
-
-([MABCAM_Class120005] of  CloFuncall
-
-	(source "(run)"))
 
 ([MABCAM_Class20000] of  ClpFile
 
@@ -853,48 +848,6 @@
 	(arguments "[]")
 	(function [ClojureCLIPSJNI_Class31]))
 
-([MABCAM_Class80000] of  ClpFile
-
-	(constructs
-		[MABCAM_Class90001]
-		[MABCAM_Class90002]
-		[MABCAM_Class90003]
-		[MABCAM_Class90004]
-		[MABCAM_Class90005]
-		[MABCAM_Class90006]
-		[MABCAM_Class90007]
-		[MABCAM_Class90008]
-		[MABCAM_Class90009]
-		[MABCAM_Class90010]
-		[MABCAM_Class90011]
-		[MABCAM_Class90012]
-		[MABCAM_Class90013]
-		[MABCAM_Class90014]
-		[MABCAM_Class90015]
-		[MABCAM_Class90016]
-		[MABCAM_Class90017]
-		[MABCAM_Class90018]
-		[MABCAM_Class90019]
-		[MABCAM_Class90020]
-		[MABCAM_Class90021]
-		[MABCAM_Class90022]
-		[MABCAM_Class90023]
-		[MABCAM_Class90024]
-		[MABCAM_Class90025]
-		[MABCAM_Class90026]
-		[MABCAM_Class90027]
-		[MABCAM_Class90028]
-		[MABCAM_Class90029]
-		[MABCAM_Class90030]
-		[MABCAM_Class90031]
-		[MABCAM_Class90032]
-		[MABCAM_Class90033]
-		[MABCAM_Class90034]
-		[MABCAM_Class90035]
-		[MABCAM_Class90036])
-	(path "clp/auto24.clp")
-	(title "Automotive Expert System"))
-
 ([MABCAM_Class80001] of  Envalue
 
 	(N 4)
@@ -907,223 +860,6 @@
 		[MABCAM_Class120002])
 	(path "clp/Hello.clp")
 	(title "Hello"))
-
-([MABCAM_Class90001] of  Comment
-
-	(source ";;;======================================================\n;;;   Automotive Expert System\n;;;\n;;;     This expert system diagnoses some simple\n;;;     problems with a car.\n;;;\n;;;     CLIPS Version 6.0 Example\n;;;\n;;;     To execute, merely load, reset and run.\n;;;======================================================")
-	(title "Automotive Expert System"))
-
-([MABCAM_Class90002] of  Comment
-
-	(source ";;;**********************\n;;;* ENGINE STATE RULES *\n;;;**********************")
-	(title "ENGINE STATE RULES"))
-
-([MABCAM_Class90003] of  Rule
-
-	(lhs "(working-state engine normal)")
-	(rhs "(assert (repair \"No repair needed.\"))\n(assert (spark-state engine normal))\n(assert (charge-state battery charged))\n(assert (rotation-state engine rotates))")
-	(salience 10)
-	(title "normal-engine-state-conclusions"))
-
-([MABCAM_Class90004] of  Rule
-
-	(lhs "(working-state engine unsatisfactory)")
-	(rhs "(assert (charge-state battery charged))\n(assert (rotation-state engine rotates))")
-	(salience 10)
-	(title "unsatisfactory-engine-state-conclusions"))
-
-([MABCAM_Class90005] of  Comment
-
-	(source ";;;***************\n;;;* QUERY RULES *\n;;;***************")
-	(title "QUERY RULES"))
-
-([MABCAM_Class90006] of  Rule
-
-	(lhs "(not (working-state engine ?))\n(not (repair ?))")
-	(rhs "(assert (q (gensym)))\n(user-confirm \"engine start\" \"Does the engine start (yes/no)? \")")
-	(title "determine-engine-state1"))
-
-([MABCAM_Class90007] of  Rule
-
-	(lhs "(engine start yes)")
-	(rhs "(user-confirm \"engine run normally\" \"Does the engine run normally (yes/no)? \")")
-	(title "determine-engine-state2"))
-
-([MABCAM_Class90008] of  Rule
-
-	(lhs "(engine run normally yes)\n?q <- (q ?)")
-	(rhs "(assert (working-state engine normal))\n(retract ?q)")
-	(title "determine-engine-state3"))
-
-([MABCAM_Class90009] of  Rule
-
-	(lhs "(engine run normally no)\n?q <- (q ?)")
-	(rhs "(assert (working-state engine unsatisfactory))\n(retract ?q)")
-	(title "determine-engine-state4"))
-
-([MABCAM_Class90010] of  Rule
-
-	(lhs "(engine start no)\n?q <- (q ?)")
-	(rhs "(assert (working-state engine does-not-start))\n(retract ?q)")
-	(title "determine-engine-state5"))
-
-([MABCAM_Class90011] of  Rule
-
-	(lhs "(working-state engine does-not-start)\n(not (rotation-state engine ?))\n(not (repair ?))")
-	(rhs "(assert (q (gensym)))\n(user-confirm \"engine rotate\" \"Does the engine rotate (yes/no)? \")")
-	(title "determine-rotation-state1"))
-
-([MABCAM_Class90012] of  Rule
-
-	(lhs "(engine rotate yes)\n?q <- (q ?)")
-	(rhs "(assert (rotation-state engine rotates))\n(assert (spark-state engine irregular-spark))\n (retract ?q)")
-	(title "determine-rotation-state2"))
-
-([MABCAM_Class90013] of  Rule
-
-	(lhs "(engine rotate no)\n?q <- (q ?)")
-	(rhs "(assert (rotation-state engine does-not-rotate))       \n(assert (spark-state engine does-not-spark))\n(retract ?q)")
-	(title "determine-rotation-state3"))
-
-([MABCAM_Class90014] of  Rule
-
-	(lhs "(working-state engine unsatisfactory)\n(not (repair ?))")
-	(rhs "(assert (q (gensym)))\n(user-confirm \"engine sluggish\" \"Is the engine sluggish (yes/no)? \")")
-	(title "determine-sluggishness1"))
-
-([MABCAM_Class90015] of  Rule
-
-	(lhs "(engine sluggish yes)\n?q <- (q ?)")
-	(rhs "(assert (repair \"Clean the fuel line.\"))\n (retract ?q)")
-	(title "determine-sluggishness2"))
-
-([MABCAM_Class90016] of  Rule
-
-	(lhs "(working-state engine unsatisfactory)\n(not (repair ?))")
-	(rhs "(assert (q (gensym)))\n(user-confirm \"engine misfire\" \"Does the engine misfire (yes/no)? \")")
-	(title "determine-misfiring1"))
-
-([MABCAM_Class90017] of  Rule
-
-	(lhs "(engine misfire yes)\n?q <- (q ?)")
-	(rhs "(assert (repair \"Point gap adjustment.\"))       \n(assert (spark-state engine irregular-spark))\n(retract ?q)")
-	(title "determine-misfiring2"))
-
-([MABCAM_Class90018] of  Rule
-
-	(lhs "(working-state engine unsatisfactory)\n(not (repair ?))")
-	(rhs "(assert (q (gensym)))\n(user-confirm \"engine knock\" \"Does the engine knock (yes/no)? \")")
-	(title "determine-knocking1"))
-
-([MABCAM_Class90019] of  Rule
-
-	(lhs "(engine knock yes)\n?q <- (q ?)")
-	(rhs "(assert (repair \"Timing adjustment.\"))\n(retract ?q)")
-	(title "determine-knocking2"))
-
-([MABCAM_Class90020] of  Rule
-
-	(lhs "(working-state engine unsatisfactory)\n(not (symptom engine low-output | not-low-output))\n(not (repair ?))")
-	(rhs "(assert (q (gensym)))\n(user-confirm \"engine low output\" \"Is the output of the engine low (yes/no)? \")")
-	(title "determine-low-output1"))
-
-([MABCAM_Class90021] of  Rule
-
-	(auto-focus TRUE)
-	(lhs "(engine low output yes)\n?q <- (q ?)")
-	(rhs "(assert (symptom engine low-output))\n(retract ?q)")
-	(title "determine-low-output2"))
-
-([MABCAM_Class90022] of  Rule
-
-	(lhs "(engine low output no)\n?q <- (q ?)")
-	(rhs "(assert (symptom engine not-low-output))\n(retract ?q)")
-	(title "determine-low-output3"))
-
-([MABCAM_Class90023] of  Rule
-
-	(lhs "(working-state engine does-not-start)\n(rotation-state engine rotates)\n(not (repair ?))")
-	(rhs "(assert (q (gensym)))\n (user-confirm \"engine has gas in tank\" \"Does the tank have any gas in it (yes/no)? \")")
-	(title "determine-gas-level1"))
-
-([MABCAM_Class90024] of  Rule
-
-	(lhs "(engine has gas in tank)\n?q <- (q ?)")
-	(rhs "(assert (repair \"Add gas.\"))\n(retract ?q)")
-	(title "determine-gas-level2"))
-
-([MABCAM_Class90025] of  Rule
-
-	(lhs "(rotation-state engine does-not-rotate)\n(not (charge-state battery ?))\n(not (repair ?))")
-	(rhs "(assert (q (gensym)))\n(user-confirm \"engine has battery charged\" \"Is the battery charged (yes/no)? \")")
-	(title "determine-battery-state1"))
-
-([MABCAM_Class90026] of  Rule
-
-	(lhs "(engine has battery charged yes)\n?q <- (q ?)")
-	(rhs "(assert (charge-state battery charged))\n(retract ?q)")
-	(title "determine-battery-state2"))
-
-([MABCAM_Class90027] of  Rule
-
-	(lhs "(engine has battery charged no)\n?q <- (q ?)")
-	(rhs "(assert (repair \"Charge the battery.\"))\n(assert (charge-state battery dead))\n(retract ?q)")
-	(title "determine-battery-state3"))
-
-([MABCAM_Class90028] of  Rule
-
-	(lhs "(or (and (working-state engine does-not-start)      \n              (spark-state engine irregular-spark))\n      (symptom engine low-output))")
-	(rhs "(assert (q (gensym)))\n(user-select \"engine has points\" \"What is the surface state of the points?\"\n                    normal burned contaminated)")
-	(title "determine-point-surface-state1"))
-
-([MABCAM_Class90029] of  Rule
-
-	(lhs "(engine has points burned)\n?q <- (q ?)")
-	(rhs "(assert (repair \"Replace the points.\"))\n(retract ?q)")
-	(title "determine-point-surface-state2"))
-
-([MABCAM_Class90030] of  Rule
-
-	(lhs "(engine has points contaminated)\n?q <- (q ?)")
-	(rhs "(assert (repair \"Clean the points.\"))\n(retract ?q)")
-	(title "determine-point-surface-state3"))
-
-([MABCAM_Class90031] of  Rule
-
-	(lhs "(working-state engine does-not-start)      \n(spark-state engine does-not-spark)\n(charge-state battery charged)\n(not (repair ?))")
-	(rhs "(assert (q (gensym)))\n (user-confirm \"engine conductivity test positive\" \"Is the conductivity test for the ignition coil positive (yes/no)? \")")
-	(title "determine-conductivity-test1"))
-
-([MABCAM_Class90032] of  Rule
-
-	(lhs "(engine conductivity test positive yes)\n?q <- (q ?)")
-	(rhs "(assert (repair \"Repair the distributor lead wire.\"))\n(retract ?q)")
-	(title "determine-conductivity-test2"))
-
-([MABCAM_Class90033] of  Rule
-
-	(lhs "(engine conductivity test positive no)\n?q <- (q ?)")
-	(rhs "(assert (repair \"Replace the ignition coil.\"))\n(retract ?q)")
-	(title "determine-conductivity-test3"))
-
-([MABCAM_Class90034] of  Rule
-
-	(lhs "(not (q ?))\n(not (repair ?))")
-	(rhs "(facts)\n(assert (repair \"Take your car to a mechanic.\"))")
-	(salience -10)
-	(title "no-repairs"))
-
-([MABCAM_Class90035] of  Comment
-
-	(source ";;;****************************\n;;;* REPAIR RULES *\n;;;****************************")
-	(title "REPAIR RULES"))
-
-([MABCAM_Class90036] of  Rule
-
-	(lhs "(repair ?item)")
-	(rhs "(user-message \"Automotive Expert System\" (str-cat \"Suggested Repair: \" ?item))")
-	(salience 10)
-	(title "print-repair"))
 
 ([MABCAM_Class90038] of  CloFuncall
 
