@@ -61,6 +61,6 @@ $ run_IDE.bat  ;; Widows
 
 ## License
 
-Copyright © 2023 Ruslan Sorokin
+Copyright © 2024 Ruslan Sorokin
 
 Distributed under the Mozilla Public License Version 2.0 as Protege-3.5.
