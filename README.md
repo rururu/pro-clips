@@ -41,7 +41,6 @@ $ clj -M:pro-clips
 
 4. [New Project](https://www.youtube.com/watch?v=MVQQ0cJlbZU)
 
-
 ## Description 
 
 Used Protege 3.5 version is a little bit old. It is *Frame-based*. Recent Protege versions are *OWL-based*. It is superfluous for our purposes.
@@ -51,6 +50,14 @@ This IDE has 2 important differences from traditional ones.
 1. With Protege, it allows you to first construct the application domain **visually** and manipulate it using Protege's GUI. Then add functionality to the application using Clojure programs. And finally, add rule-based functionality using CLIPS.
 
 2. The programming environment in Protege GUI is multi-window. **Each function, rule, template and so on has a separate window**. This allows quite a lot of objects of different types to be displayed on the screen at the same time and creates additional convenience when constructing and debugging.
+
+## Start original CLIPS IDE
+
+```clj
+$ cd <installation directory>
+$ ./run_IDE.sh ;; Linux, Mac OS
+$ run_IDE.bat  ;; Widows
+```
 
 ## License
 
