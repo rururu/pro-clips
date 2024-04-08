@@ -2,7 +2,8 @@
 
 ### Protege based CLIPS Integrated Development Environment
 
-![screenshot](MultiWindowedIDE.png)
+[![Watch the video](MultiWindowedIDE.png)](https://www.youtube.com/watch?v=RQq_sqyxsEw)
+Click the screenshot to see a video!
 
 IDE based on:
 
@@ -32,13 +33,13 @@ $ clj -M:pro-clips
 ```
 ## Short video lessons 
 
-1. [Hello World]()
+1. [Hello World](https://www.youtube.com/watch?v=khDvm-8RtBU)
 
-2. [Monkees and Bananas, Cannibals and Missionaries]()
+2. [Monkees and Bananas, Cannibals and Missionaries](https://www.youtube.com/watch?v=dRMppDBezYQ)
 
-3. [Automotive Expert System]()
+3. [Automotive Expert System](https://www.youtube.com/watch?v=RQq_sqyxsEw)
 
-4. [New Project]()
+4. [New Project](https://www.youtube.com/watch?v=MVQQ0cJlbZU)
 
 
 ## Description 
