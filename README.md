@@ -28,7 +28,7 @@ Requires pre-installation of Clojure CLI (comand-line interface [https://clojure
 
 ```clj
 $ cd <installation directory>
-$ cli -M:pro-clips
+$ clj -M:pro-clips
 ```
 ## Short video lessons 
 
@@ -43,7 +43,7 @@ $ cli -M:pro-clips
 
 ## Description 
 
-Used Protege 3.5 version a little bit old. It is *Frame-based*. Recent Protege versions are *OWL-based*. It is superfluous for our purposes.
+Used Protege 3.5 version is a little bit old. It is *Frame-based*. Recent Protege versions are *OWL-based*. It is superfluous for our purposes.
 
 This IDE has 2 important differences from traditional ones.
 
