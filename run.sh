@@ -2,4 +2,12 @@
 
 cd $(dirname $0)
 
-java -Djava.library.path=lib -jar target/proclips-0.0.1-standalone.jar
+JARS=lib/'*'
+MAIN_CLASS=edu.stanford.smi.protege.Application
+OPTIONS=-Xmx1000M
+ENCODING=-Dfile.encoding=UTF-8
+LIB_PATH=-Djava.library.path=lib
+
+java $OPTIONS $ENCODING $LIB_PATH -cp .:classes:$JARS:src:src/clojure $MAIN_CLASS
+
+

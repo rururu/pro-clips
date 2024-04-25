@@ -15,7 +15,7 @@ IDE based on:
 
 Java version 17 or above.
 
-## User start
+## Start
 
 ```clj
 $ cd <installation directory>
@@ -23,14 +23,6 @@ $ ./run.sh ;; Linux, Mac OS
 $ run.bat  ;; Widows
 ```
 
-## Developer start
-
-Requires pre-installation of Clojure CLI (comand-line interface [https://clojure.org/guides/install_clojure](https://clojure.org/guides/install_clojure))
-
-```clj
-$ cd <installation directory>
-$ clj -M:pro-clips
-```
 ## Short video lessons 
 
 1. [Hello World](https://www.youtube.com/watch?v=khDvm-8RtBU)

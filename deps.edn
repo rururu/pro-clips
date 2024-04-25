@@ -10,7 +10,5 @@
         protege/ProtegeExtensions {:local/root "lib/ProtegeExtensions.jar"}
         CLIPS/CLIPS {:local/root "lib/CLIPSIDE.jar"}}
  :aliases {:pro-clips {:main-opts ["-m" "clips-pro-interface.main"]
-                       :jvm-opts  ["-Djava.library.path=./lib"]}
-           :build {:deps {io.github.clojure/tools.build {:git/tag "v0.10.0" :git/sha "3a2c484"}}
-				   :ns-default build}}
+                       :jvm-opts  ["-Djava.library.path=./lib"]}}
  :paths ["src" "src/clojure" "classes"]}
